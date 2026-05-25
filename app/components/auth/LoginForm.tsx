@@ -14,18 +14,64 @@ export function LoginForm({ onSuccess, loading = false, error }: LoginFormProps)
   const [accessKey, setAccessKey] = useState("");
   const [secretKey, setSecretKey] = useState("");
   const [rejectUnauthorized, setRejectUnauthorized] = useState(true);
+  const [validating, setValidating] = useState(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!endpoint.trim() || !accessKey.trim() || !secretKey.trim()) {
+      setValidationError("Please fill in all fields");
       return;
     }
-    onSuccess({
-      endpoint,
-      accessKey,
-      secretKey,
-      rejectUnauthorized,
-    });
+
+    setValidating(true);
+    setValidationError(null);
+
+    try {
+      // Validate credentials by testing a simple API call (list buckets)
+      const response = await fetch("/api/s3/buckets", {
+        method: "GET",
+        headers: {
+          "x-s3-endpoint": endpoint,
+          "x-s3-access-key": accessKey,
+          "x-s3-secret-key": secretKey,
+          "x-s3-reject-unauthorized": rejectUnauthorized ? "true" : "false",
+        },
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        // Extract better error message from details if available
+        let errorMessage = data.error || "Invalid credentials";
+        
+        if (data.details) {
+          // Parse details like "SignatureDoesNotMatch: UnknownError"
+          if (data.details.includes("SignatureDoesNotMatch")) {
+            errorMessage = "Invalid access key or secret key. Please check your credentials.";
+          } else if (data.details.includes("NoSuchBucket")) {
+            errorMessage = "Bucket not found. Please verify your endpoint.";
+          } else if (data.details.includes("ConnectionRefused") || data.details.includes("ECONNREFUSED")) {
+            errorMessage = "Cannot connect to S3 endpoint. Please verify the endpoint URL.";
+          } else if (data.details.includes("CERT")) {
+            errorMessage = "SSL certificate verification failed. Try disabling SSL verification.";
+          }
+        }
+        
+        throw new Error(errorMessage);
+      }
+
+      // Credentials are valid, call onSuccess
+      onSuccess({
+        endpoint,
+        accessKey,
+        secretKey,
+        rejectUnauthorized,
+      });
+    } catch (err) {
+      setValidationError(err instanceof Error ? err.message : "Failed to validate credentials");
+    } finally {
+      setValidating(false);
+    }
   };
 
   return (
@@ -33,9 +79,9 @@ export function LoginForm({ onSuccess, loading = false, error }: LoginFormProps)
       <h2 className="text-2xl font-semibold tracking-tight text-[#f1f0ff]">Connect to your S3 endpoint</h2>
       <p className="mt-2 text-sm text-[#888899]">Use your credentials to continue.</p>
 
-      {error && (
+      {(error || validationError) && (
         <div className="mt-6 rounded-lg border-l-[3px] border-[#ef4444] bg-red-500/10 px-4 py-3 text-sm text-red-300">
-          {error}
+          {validationError || error}
         </div>
       )}
 
@@ -105,13 +151,13 @@ export function LoginForm({ onSuccess, loading = false, error }: LoginFormProps)
 
         <button
           type="submit"
-          disabled={loading}
+          disabled={loading || validating}
           className="flex w-full items-center justify-center gap-2 rounded-xl bg-linear-to-br from-[#6366f1] to-[#8b5cf6] px-4 py-2.5 text-sm font-semibold text-white transition-all duration-150 hover:-translate-y-px hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {loading && (
+          {(loading || validating) && (
             <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
           )}
-          {loading ? "Logging in..." : "Login"}
+          {validating ? "Validating..." : loading ? "Logging in..." : "Login"}
         </button>
       </form>
     </div>
