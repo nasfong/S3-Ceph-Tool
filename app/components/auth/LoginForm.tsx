@@ -41,22 +41,8 @@ export function LoginForm({ onSuccess, loading = false, error }: LoginFormProps)
 
       if (!response.ok) {
         const data = await response.json();
-        // Extract better error message from details if available
-        let errorMessage = data.error || "Invalid credentials";
-        
-        if (data.details) {
-          // Parse details like "SignatureDoesNotMatch: UnknownError"
-          if (data.details.includes("SignatureDoesNotMatch")) {
-            errorMessage = "Invalid access key or secret key. Please check your credentials.";
-          } else if (data.details.includes("NoSuchBucket")) {
-            errorMessage = "Bucket not found. Please verify your endpoint.";
-          } else if (data.details.includes("ConnectionRefused") || data.details.includes("ECONNREFUSED")) {
-            errorMessage = "Cannot connect to S3 endpoint. Please verify the endpoint URL.";
-          } else if (data.details.includes("CERT")) {
-            errorMessage = "SSL certificate verification failed. Try disabling SSL verification.";
-          }
-        }
-        
+        // Use the error message from API which now includes user-friendly messages
+        const errorMessage = data.error || "Invalid credentials. Please check your endpoint, access key, and secret key.";
         throw new Error(errorMessage);
       }
 

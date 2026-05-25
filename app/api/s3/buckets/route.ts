@@ -40,13 +40,37 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ buckets: data.Buckets ?? [] });
   } catch (err) {
     console.error("S3 list buckets error:", err);
+    
     let errorMessage = "Failed to list buckets";
-    if (err instanceof Error) {
+    let statusCode = 500;
+    const errString = String(err);
+    
+    // Parse specific S3 errors from error string
+    if (errString.includes("SignatureDoesNotMatch")) {
+      errorMessage = "Invalid access key or secret key. Please check your credentials.";
+      statusCode = 401;
+    } else if (errString.includes("InvalidAccessKeyId")) {
+      errorMessage = "Invalid access key ID. Please verify your S3 access key is correct.";
+      statusCode = 401;
+    } else if (errString.includes("NoSuchBucket")) {
+      errorMessage = "Bucket not found. Please verify the bucket name and region.";
+      statusCode = 404;
+    } else if (errString.includes("AccessDenied")) {
+      errorMessage = "Access denied. Your credentials do not have permission to list buckets.";
+      statusCode = 403;
+    } else if (errString.includes("ECONNREFUSED") || errString.includes("connection refused")) {
+      errorMessage = "Cannot connect to S3 endpoint. Please verify the endpoint URL is correct and accessible.";
+      statusCode = 400;
+    } else if (errString.includes("CERT") || errString.includes("certificate")) {
+      errorMessage = "SSL certificate verification failed. Try disabling SSL certificate verification.";
+      statusCode = 400;
+    } else if (err instanceof Error) {
       errorMessage = err.message;
     }
+    
     return NextResponse.json(
-      { error: errorMessage, details: String(err) },
-      { status: 500 }
+      { error: errorMessage, details: errString },
+      { status: statusCode }
     );
   }
 }
