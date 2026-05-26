@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { S3Bucket, S3Credentials } from "@/lib/types";
-import { loadSession, clearSession, getHeaders } from "@/lib/session";
-import { PageShell } from "../components/layout/PageShell";
+import { getHeaders } from "@/lib/session";
+import { useAuth } from "@/context/AuthProvider";
 import { Breadcrumbs } from "../components/layout/Breadcrumbs";
 import { BucketGrid } from "../components/buckets/BucketGrid";
 import { CreateBucketModal } from "../components/buckets/CreateBucketModal";
@@ -12,7 +12,7 @@ import { DeleteBucketModal } from "../components/buckets/DeleteBucketModal";
 
 export default function BucketsPage() {
   const router = useRouter();
-  const [credentials, setCredentials] = useState<S3Credentials | null>(null);
+  const { credentials } = useAuth();
   const [buckets, setBuckets] = useState<S3Bucket[]>([]);
   const [loading, setLoading] = useState(false);
   const [updatingAcl, setUpdatingAcl] = useState<string | null>(null);
@@ -21,14 +21,11 @@ export default function BucketsPage() {
   const [deletingBucket, setDeletingBucket] = useState<S3Bucket | null>(null);
 
   useEffect(() => {
-    const session = loadSession();
-    if (!session) {
-      router.replace("/");
-      return;
+    // Fetch buckets if S3 credentials exist
+    if (credentials) {
+      fetchBucketsAndAcls(credentials);
     }
-    setCredentials(session);
-    fetchBucketsAndAcls(session);
-  }, [router]);
+  }, [credentials]);
 
   const fetchBucketsAndAcls = async (creds: S3Credentials) => {
     try {
@@ -116,15 +113,10 @@ export default function BucketsPage() {
     setShowCreateModal(false);
   };
 
-  const handleLogout = () => {
-    clearSession();
-    router.replace("/");
-  };
-
   if (!credentials) return null;
 
   return (
-    <PageShell credentials={credentials} onLogout={handleLogout}>
+    <>
       {error && (
         <div className="mb-5 rounded-lg border-l-[3px] border-[#ef4444] bg-red-500/10 px-4 py-3 text-sm text-red-300">
           {error}
@@ -201,6 +193,6 @@ export default function BucketsPage() {
           }}
         />
       )}
-    </PageShell>
+    </>
   );
 }

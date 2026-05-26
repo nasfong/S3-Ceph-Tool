@@ -2,30 +2,27 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { S3Credentials } from "@/lib/types";
-import { saveSession, loadSession } from "@/lib/session";
 import { LoginForm } from "./components/auth/LoginForm";
+import { useAuth } from "@/context/AuthProvider";
 
 export default function HomePage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isChecking, setIsChecking] = useState(true);
-
+  const { authenticated } = useAuth();
   useEffect(() => {
-    const session = loadSession();
-    if (session) {
+    if (authenticated) {
       router.replace("/buckets");
     } else {
       setIsChecking(false);
     }
-  }, [router]);
+  }, [router, authenticated]);
 
-  const handleLoginSuccess = async (creds: S3Credentials) => {
+  const handleLoginSuccess = async () => {
     try {
       setLoading(true);
       setError(null);
-      saveSession(creds);
       router.push("/buckets");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error");
@@ -53,7 +50,7 @@ export default function HomePage() {
             </p>
           </div>
           <pre className="relative z-10 p-10 text-[11px] leading-relaxed text-indigo-300/70 font-mono">
-{`╭─────────────────────────────────────────╮
+            {`╭─────────────────────────────────────────╮
 │   ◉───────◉────────◉───────◉          │
 │   │       │        │       │          │
 │   ◉──◉────◉──◉─────◉──◉────◉          │

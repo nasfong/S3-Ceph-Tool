@@ -34,7 +34,13 @@ export function FileTable({
       <div className="overflow-hidden rounded-b-xl border border-t-0 border-white/8 bg-[#111118]">
         <div className="grid grid-cols-12 border-b border-white/8 px-4 py-2 text-[11px] uppercase tracking-[0.08em] text-[#888899]">
           <span className="col-span-1 flex items-center">
-            <input type="checkbox" disabled className="h-4 w-4 rounded border-white/8" />
+            <input 
+              type="checkbox" 
+              disabled 
+              checked={false}
+              onChange={() => {}}
+              className="h-4 w-4 rounded border-white/8" 
+            />
           </span>
           <span className="col-span-1">Type</span>
           <span className="col-span-5">Filename</span>

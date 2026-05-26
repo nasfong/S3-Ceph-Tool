@@ -5,7 +5,6 @@ import { useRouter, useSearchParams, useParams } from "next/navigation";
 import { S3Credentials, S3Object, S3Bucket } from "@/lib/types";
 import { loadSession, clearSession, getHeaders } from "@/lib/session";
 import { normalizePrefix } from "@/lib/s3-prefix";
-import { PageShell } from "../../components/layout/PageShell";
 import { Breadcrumbs } from "../../components/layout/Breadcrumbs";
 import { FileTable } from "../../components/files/FileTable";
 import { FileDetailModal } from "../../components/files/FileDetailModal";
@@ -224,7 +223,7 @@ export default function BucketPage() {
   if (!credentials) return null;
 
   return (
-    <PageShell credentials={credentials} onLogout={handleLogout}>
+    <>
       {error && (
         <div className="mb-5 rounded-lg border-l-[3px] border-red-500 bg-red-500/10 px-4 py-3 text-sm text-red-300">
           {error}
@@ -383,6 +382,6 @@ export default function BucketPage() {
           }
         }}
       />
-    </PageShell>
+    </>
   );
 }

@@ -1,0 +1,17 @@
+#!/bin/sh
+set -e
+
+# Generate /app/public/env.js from current environment variables
+cat <<EOF > /app/public/env.js
+window.__ENV__ = {
+  "NEXT_PUBLIC_KEYCLOAK_URL": "${NEXT_PUBLIC_KEYCLOAK_URL}",
+  "NEXT_PUBLIC_KEYCLOAK_REALM": "${NEXT_PUBLIC_KEYCLOAK_REALM}",
+  "NEXT_PUBLIC_KEYCLOAK_CLIENT_ID": "${NEXT_PUBLIC_KEYCLOAK_CLIENT_ID}",
+  "NEXT_PUBLIC_GATEWAY_URL": "${NEXT_PUBLIC_GATEWAY_URL}",
+  "NEXT_PUBLIC_S3_ENDPOINT": "${NEXT_PUBLIC_S3_ENDPOINT}",
+  "NEXT_PUBLIC_CERTIFICATE": "${NEXT_PUBLIC_CERTIFICATE}"
+};
+EOF
+
+echo "✅ env.js generated"
+exec "$@"

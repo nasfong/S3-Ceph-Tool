@@ -1,46 +1,12 @@
 import { S3Credentials } from "./types";
 
-const KEYS = {
-  endpoint: "s3_endpoint",
-  accessKey: "s3_access_key",
-  secretKey: "s3_secret_key",
-  rejectUnauthorized: "s3_reject_unauthorized",
-} as const;
-
-export function saveSession(creds: S3Credentials): void {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(KEYS.endpoint, creds.endpoint);
-  localStorage.setItem(KEYS.accessKey, creds.accessKey);
-  localStorage.setItem(KEYS.secretKey, creds.secretKey);
-  localStorage.setItem(KEYS.rejectUnauthorized, String(creds.rejectUnauthorized));
-}
-
-export function loadSession(): S3Credentials | null {
-  if (typeof window === "undefined") return null;
-  const endpoint = localStorage.getItem(KEYS.endpoint);
-  const accessKey = localStorage.getItem(KEYS.accessKey);
-  const secretKey = localStorage.getItem(KEYS.secretKey);
-  const rejectUnauthorized = localStorage.getItem(KEYS.rejectUnauthorized);
-
-  if (!endpoint || !accessKey || !secretKey) {
-    return null;
-  }
-
-  return {
-    endpoint,
-    accessKey,
-    secretKey,
-    rejectUnauthorized: rejectUnauthorized !== "false",
-  };
-}
-
-export function clearSession(): void {
-  if (typeof window === "undefined") return;
-  localStorage.removeItem(KEYS.endpoint);
-  localStorage.removeItem(KEYS.accessKey);
-  localStorage.removeItem(KEYS.secretKey);
-  localStorage.removeItem(KEYS.rejectUnauthorized);
-}
+/**
+ * ⚠️ DEPRECATED: Storage functions have been removed.
+ * Use AuthProvider context + useAuth() hook instead for S3 credentials management.
+ * S3 credentials are now stored in-memory only via React Context.
+ * 
+ * This file now only exports getHeaders utility.
+ */
 
 export function getHeaders(creds: S3Credentials): Record<string, string> {
   return {
@@ -49,4 +15,32 @@ export function getHeaders(creds: S3Credentials): Record<string, string> {
     "x-s3-secret-key": creds.secretKey,
     "x-s3-reject-unauthorized": String(creds.rejectUnauthorized),
   };
+}
+
+/**
+ * @deprecated Use AuthProvider's setS3Credentials instead
+ */
+export function saveSession(creds: S3Credentials): void {
+  console.warn(
+    "saveSession is deprecated. Use AuthProvider's setS3Credentials() instead."
+  );
+}
+
+/**
+ * @deprecated Use AuthProvider's s3Credentials and clearS3Credentials instead
+ */
+export function loadSession(): S3Credentials | null {
+  console.warn(
+    "loadSession is deprecated. Use AuthProvider's s3Credentials instead."
+  );
+  return null;
+}
+
+/**
+ * @deprecated Use AuthProvider's clearS3Credentials instead
+ */
+export function clearSession(): void {
+  console.warn(
+    "clearSession is deprecated. Use AuthProvider's clearS3Credentials() instead."
+  );
 }

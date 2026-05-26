@@ -1,4 +1,5 @@
 import Keycloak from "keycloak-js";
+import { ENV } from "./env";
 
 let keycloak: Keycloak | null = null;
 
@@ -8,9 +9,9 @@ export const initializeKeycloak = async (): Promise<Keycloak> => {
   }
 
   keycloak = new Keycloak({
-    url: process.env.NEXT_PUBLIC_KEYCLOAK_URL!,
-    realm: process.env.NEXT_PUBLIC_KEYCLOAK_REALM!,
-    clientId: process.env.NEXT_PUBLIC_KEYCLOAK_CLIENT_ID!,
+    url: ENV.KEYCLOAK_URL,
+    realm: ENV.KEYCLOAK_REALM,
+    clientId: ENV.KEYCLOAK_CLIENT_ID,
   });
 
   await keycloak.init({
