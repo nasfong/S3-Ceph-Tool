@@ -12,6 +12,102 @@ type BucketCardProps = {
   onDelete?: () => void;
 };
 
+function TrashIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10 11v6M14 11v6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function GlobeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="h-3 w-3" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M12 3c-2.4 4-2.4 14 0 18M12 3c2.4 4 2.4 14 0 18M3 12h18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function LockIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="h-3 w-3" xmlns="http://www.w3.org/2000/svg">
+      <rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+type AclToggleProps = {
+  isPublic: boolean;
+  loading: boolean;
+  onToggle: (e: React.MouseEvent) => void;
+};
+
+function AclToggle({ isPublic, loading, onToggle }: AclToggleProps) {
+  return (
+    <button
+      onClick={onToggle}
+      disabled={loading}
+      aria-label={isPublic ? "Make private" : "Make public"}
+      className="group/toggle flex items-center gap-2.5 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
+    >
+      {/* label left */}
+      <span
+        className={`text-[11px] font-medium font-mono tracking-wide transition-colors duration-200 ${isPublic ? "text-white/30" : "text-amber-400/90"
+          }`}
+      >
+        <LockIcon />
+      </span>
+
+      {/* track */}
+      <div
+        className={`relative flex h-5 w-9 items-center rounded-full border transition-all duration-300 ${isPublic
+            ? "border-emerald-500/40 bg-emerald-500/20"
+            : "border-white/10 bg-white/6"
+          }`}
+      >
+        {/* loading shimmer overlay */}
+        {loading && (
+          <span className="absolute inset-0 rounded-full overflow-hidden">
+            <span className="absolute inset-0 -translate-x-full animate-[shimmer_1s_infinite] bg-linear-to-r from-transparent via-white/20 to-transparent" />
+          </span>
+        )}
+
+        {/* thumb */}
+        <span
+          className={`absolute flex h-3.5 w-3.5 items-center justify-center rounded-full shadow-md transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isPublic
+              ? "left-4.5 bg-emerald-400 shadow-emerald-500/40"
+              : "left-0.75 bg-white/40"
+            }`}
+        >
+          {/* icon inside thumb */}
+          {!loading && (
+            <span
+              className={`transition-all duration-200 ${isPublic ? "text-emerald-900" : "text-white/60"
+                }`}
+            >
+              {isPublic ? <GlobeIcon /> : <LockIcon />}
+            </span>
+          )}
+          {loading && (
+            <span className="h-1.5 w-1.5 rounded-full bg-white/60 animate-pulse" />
+          )}
+        </span>
+      </div>
+
+      {/* label right */}
+      <span
+        className={`text-[11px] font-medium font-mono tracking-wide transition-colors duration-200 ${isPublic ? "text-emerald-400" : "text-white/30"
+          }`}
+      >
+        <GlobeIcon />
+      </span>
+    </button>
+  );
+}
+
 export function BucketCard({
   bucket,
   isSelected = false,
@@ -20,56 +116,95 @@ export function BucketCard({
   onAclToggle,
   onDelete,
 }: BucketCardProps) {
+  const createdAt = new Date(bucket.CreationDate);
+  const formattedDate = createdAt.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+
   return (
     <div
       onClick={onClick}
-      className={`group relative cursor-pointer rounded-xl border bg-[#111118] p-5 transition-all duration-150 ${
-        isSelected
-          ? "border-[#6366f1]"
-          : "border-white/8 hover:-translate-y-0.5 hover:border-indigo-500/50"
-      }`}
+      className={`group relative cursor-pointer rounded-xl border transition-all duration-200 overflow-hidden ${isSelected
+          ? "border-indigo-500/60 bg-indigo-500/6 shadow-[0_0_0_1px_rgba(99,102,241,0.15),0_4px_24px_rgba(99,102,241,0.1)]"
+          : "border-white/[0.07] bg-[#111118] hover:border-indigo-500/30 hover:bg-[#131320] hover:shadow-[0_4px_24px_rgba(0,0,0,0.3)] hover:-translate-y-0.5"
+        }`}
     >
+      {/* selected left bar */}
       {isSelected && (
-        <span className="absolute bottom-4 left-0 top-4 w-1 rounded-r bg-[#6366f1]" />
+        <span className="absolute left-0 top-3 bottom-3 w-0.75 rounded-r-full bg-indigo-500" />
       )}
 
-      <div className="mb-4">
-        <div className="mb-1 flex items-center gap-2">
-          <span className="text-lg text-indigo-400">📦</span>
-          <p className="font-mono text-[15px] font-semibold text-[#f1f0ff]">{bucket.Name}</p>
-        </div>
-        <p className="font-mono text-[11px] text-[#888899]">
-          {new Date(bucket.CreationDate).toLocaleDateString()}
-        </p>
-      </div>
+      {/* top shimmer line */}
+      <div
+        className={`absolute inset-x-0 top-0 h-px transition-opacity duration-200 ${isSelected
+            ? "opacity-100 bg-linear-to-r from-transparent via-indigo-400/60 to-transparent"
+            : "opacity-0 group-hover:opacity-100 bg-linear-to-r from-transparent via-indigo-400/30 to-transparent"
+          }`}
+      />
 
-      <div className="flex items-center justify-between border-t border-white/8 pt-3">
-        <BucketAclBadge isPublic={bucket.isPublic || false} />
-        <div className="flex gap-2">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onAclToggle();
-            }}
-            disabled={updatingAcl}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-white/12 px-3 py-1.5 text-xs font-medium text-[#f1f0ff] transition-all duration-150 hover:border-indigo-400/60 hover:bg-indigo-500/10 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {updatingAcl
-              ? "⟳ Updating..."
-              : bucket.isPublic
-              ? "🔒 Make Private"
-              : "🔓 Make Public"}
-          </button>
+      <div className="p-5">
+        {/* Top: icon + name + date + acl badge */}
+        <div className="flex items-start justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <div
+              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border transition-colors duration-200 ${isSelected
+                  ? "border-indigo-400/30 bg-indigo-500/20 text-indigo-300"
+                  : "border-white/8 bg-white/4 text-indigo-400 group-hover:border-indigo-400/20 group-hover:bg-indigo-500/10"
+                }`}
+            >
+              📦
+            </div>
+
+            <div className="min-w-0">
+              <p className="font-mono text-[13px] font-semibold text-white truncate max-w-40">
+                {bucket.Name}
+              </p>
+              <p className="mt-0.5 font-mono text-[10px] text-white/30 uppercase tracking-wider">
+                {formattedDate}
+              </p>
+            </div>
+          </div>
+
+          <BucketAclBadge isPublic={bucket.isPublic || false} />
+        </div>
+
+        {/* Divider */}
+        <div className="border-t border-white/6 mb-3" />
+
+        {/* Actions row */}
+        <div className="flex items-center justify-between">
+          {/* ACL toggle switch */}
+          <div className="flex items-center gap-2">
+            <AclToggle
+              isPublic={bucket.isPublic || false}
+              loading={updatingAcl}
+              onToggle={(e) => {
+                e.stopPropagation();
+                onAclToggle();
+              }}
+            />
+            <span className="text-[11px] text-white/30 font-mono">
+              {updatingAcl
+                ? "updating…"
+                : bucket.isPublic
+                  ? "public access"
+                  : "private"}
+            </span>
+          </div>
+
+          {/* Delete */}
           {onDelete && (
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 onDelete();
               }}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-white/12 px-3 py-1.5 text-xs font-medium text-red-400 transition-all duration-150 hover:border-red-400/60 hover:bg-red-500/10"
               aria-label="Delete bucket"
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/8 bg-white/3 text-white/30 transition-all duration-150 hover:border-red-400/40 hover:bg-red-500/10 hover:text-red-400"
             >
-              🗑️<i className="ti ti-trash" aria-hidden />
+              <TrashIcon />
             </button>
           )}
         </div>

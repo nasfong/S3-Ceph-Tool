@@ -1,6 +1,6 @@
 # Docker configuration
 IMAGE_NAME = nasfong/s3-ceph-tool
-TAG ?= latest
+TAG ?= testing
 PLATFORM ?= linux/amd64,linux/arm64
 
 stats:

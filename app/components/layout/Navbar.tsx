@@ -1,6 +1,7 @@
 "use client";
 
 import { S3Credentials } from "@/lib/types";
+import { useState, useEffect } from "react";
 
 type NavbarProps = {
   credentials: S3Credentials;
@@ -8,32 +9,103 @@ type NavbarProps = {
 };
 
 export function Navbar({ credentials, onLogout }: NavbarProps) {
+  const [scrolled, setScrolled] = useState(false);
+  const [logoutHover, setLogoutHover] = useState(false);
+
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 8);
+    window.addEventListener("scroll", handler, { passive: true });
+    return () => window.removeEventListener("scroll", handler);
+  }, []);
+
+  const shortEndpoint = credentials.endpoint
+    .replace(/^https?:\/\//, "")
+    .replace(/\/$/, "");
+
   return (
-    <div className="fixed inset-x-0 top-0 z-40 border-b border-white/8 bg-[rgba(10,10,15,0.85)] backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-3">
-          <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-indigo-400/40 bg-indigo-500/20 text-indigo-300 text-lg">
-            ⬡
-          </span>
-          <div>
-            <p className="text-sm font-semibold text-white">S3 Browser</p>
-            <p className="text-[11px] uppercase tracking-[0.08em] text-[#888899]">Developer Storage Tool</p>
+    <div
+      className={`fixed inset-x-0 top-0 z-40 transition-all duration-300 ${scrolled
+          ? "border-b border-white/6 bg-[rgba(8,8,14,0.92)] shadow-[0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-2xl"
+          : "border-b border-transparent bg-[rgba(10,10,18,0.5)] backdrop-blur-xl"
+        }`}
+    >
+      {/* top accent line */}
+      <div className="absolute inset-x-0 top-0 h-[1.5px] bg-linear-to-r from-transparent via-indigo-500/60 to-transparent" />
+
+      <div className="mx-auto flex h-15 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+
+        {/* ── Left: Logo ── */}
+        <div className="flex items-center gap-3 select-none">
+          <div className="relative flex h-8 w-8 items-center justify-center">
+            <div className="absolute inset-0 rounded-lg bg-indigo-500/20 blur-sm" />
+            <div className="relative flex h-8 w-8 items-center justify-center rounded-lg border border-indigo-400/30 bg-indigo-500/10 text-indigo-300 text-base">
+              ⬡
+            </div>
+          </div>
+          <div className="flex flex-col leading-none">
+            <span className="text-[13px] font-semibold tracking-tight text-white">
+              S3 Browser
+            </span>
+            <span className="mt-0.5 text-[10px] uppercase tracking-[0.12em] text-white/30 font-mono">
+              Storage Console
+            </span>
           </div>
         </div>
 
-        <code className="hidden max-w-[40%] truncate rounded-full border border-white/8 bg-[#111118] px-3 py-1 text-xs text-indigo-200 font-mono md:block">
-          {credentials.endpoint}
-        </code>
-
-        <div className="flex items-center gap-3">
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/12 bg-[#1c1c28] text-xs font-semibold text-indigo-200 font-mono">
-            {(credentials.accessKey?.[0] || "U").toUpperCase()}
+        {/* ── Center: Endpoint pill ── */}
+        <div className="absolute left-1/2 -translate-x-1/2 hidden md:flex items-center gap-2 rounded-full border border-white/[0.07] bg-white/4 px-3.5 py-1.5 max-w-[38%]">
+          {/* live dot */}
+          <span className="relative flex h-1.5 w-1.5 shrink-0">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
           </span>
+          <span className="truncate font-mono text-[11px] text-indigo-200/70">
+            {shortEndpoint}
+          </span>
+        </div>
+
+        {/* ── Right: User + Logout ── */}
+        <div className="flex items-center gap-2.5">
+          {/* access key badge */}
+          <div className="hidden sm:flex flex-col items-end leading-none">
+            <span className="text-[10px] text-white/30 uppercase tracking-widest font-mono">
+              Access Key
+            </span>
+            <span className="mt-0.5 font-mono text-[11px] text-white/50">
+              {(credentials.accessKey || "").slice(0, 8)}
+              <span className="text-white/20">••••</span>
+            </span>
+          </div>
+
+          {/* divider */}
+          <div className="mx-1 hidden sm:block h-5 w-px bg-white/8" />
+
+          {/* logout */}
           <button
             onClick={onLogout}
-            className="rounded-lg border border-red-400/30 px-3 py-1.5 text-xs font-medium text-red-300 transition-all duration-150 hover:border-red-400/60 hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-50"
+            onMouseEnter={() => setLogoutHover(true)}
+            onMouseLeave={() => setLogoutHover(false)}
+            className="group relative flex items-center gap-1.5 overflow-hidden rounded-lg border border-red-500/20 bg-red-500/5 px-3 py-1.5 text-xs font-medium text-red-400 transition-all duration-200 hover:border-red-400/50 hover:bg-red-500/15 hover:text-red-300 active:scale-95"
           >
-            Logout
+            {/* sweep shimmer on hover */}
+            <span
+              className={`absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-red-400/10 to-transparent transition-transform duration-500 ${logoutHover ? "translate-x-full" : ""
+                }`}
+            />
+            <svg
+              className="relative h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-x-0.5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+              />
+            </svg>
+            <span className="relative">Logout</span>
           </button>
         </div>
       </div>

@@ -11,17 +11,6 @@ type CreateBucketModalProps = {
   credentials: S3Credentials;
 };
 
-const REGIONS = [
-  "us-east-1",
-  "us-west-1",
-  "us-west-2",
-  "eu-west-1",
-  "eu-central-1",
-  "ap-southeast-1",
-  "ap-southeast-2",
-  "ap-northeast-1",
-];
-
 export function CreateBucketModal({
   open,
   onClose,
@@ -29,7 +18,6 @@ export function CreateBucketModal({
   credentials,
 }: CreateBucketModalProps) {
   const [bucketName, setBucketName] = useState("");
-  const [region, setRegion] = useState("us-east-1");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -62,7 +50,6 @@ export function CreateBucketModal({
         },
         body: JSON.stringify({
           bucketName: bucketName.trim(),
-          region,
         }),
       });
 
@@ -72,7 +59,6 @@ export function CreateBucketModal({
       }
 
       setBucketName("");
-      setRegion("us-east-1");
       onCreated(bucketName.trim());
       onClose();
     } catch (err) {
@@ -124,23 +110,6 @@ export function CreateBucketModal({
               placeholder="my-bucket"
               className="w-full rounded-lg border border-white/8 bg-[#1c1c28] px-3 py-2 font-mono text-sm text-[#f1f0ff] outline-none transition-all duration-150 placeholder:text-gray-500 focus:border-indigo-400 focus:shadow-[0_0_0_3px_rgba(99,102,241,0.2)]"
             />
-          </div>
-
-          <div>
-            <label className="mb-1 block text-[11px] uppercase tracking-[0.08em] text-[#888899]">
-              Region
-            </label>
-            <select
-              value={region}
-              onChange={(e) => setRegion(e.target.value)}
-              className="w-full rounded-lg border border-white/8 bg-[#1c1c28] px-3 py-2 font-mono text-sm text-[#f1f0ff] outline-none transition-all duration-150 focus:border-indigo-400 focus:shadow-[0_0_0_3px_rgba(99,102,241,0.2)]"
-            >
-              {REGIONS.map((r) => (
-                <option key={r} value={r} className="bg-[#1c1c28] text-[#f1f0ff]">
-                  {r}
-                </option>
-              ))}
-            </select>
           </div>
 
           <div className="flex gap-2 pt-4">

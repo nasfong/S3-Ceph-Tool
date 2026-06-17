@@ -43,7 +43,10 @@ export function ShareFileModal({
   const generateShareLink = async () => {
     setLoading(true);
     setError(null);
+    setShareUrl(null);
+    setExpiresAt(null);
     try {
+      const startTime = Date.now();
       const response = await fetch("/api/s3/presign", {
         method: "POST",
         headers: {
@@ -67,6 +70,14 @@ export function ShareFileModal({
       }
 
       const data = await response.json();
+      
+      // Ensure minimum loading time of 800ms
+      const elapsedTime = Date.now() - startTime;
+      const minLoadingTime = 800;
+      if (elapsedTime < minLoadingTime) {
+        await new Promise((resolve) => setTimeout(resolve, minLoadingTime - elapsedTime));
+      }
+      
       setShareUrl(data.url);
       setExpiresAt(new Date(data.expiresAt));
     } catch (err) {
@@ -126,8 +137,12 @@ export function ShareFileModal({
           </label>
           <select
             value={selectedExpiration}
-            onChange={(e) => setSelectedExpiration(Number(e.target.value))}
-            disabled={loading || !!shareUrl}
+            onChange={(e) => {
+              setSelectedExpiration(Number(e.target.value));
+              setShareUrl(null);
+              setExpiresAt(null);
+            }}
+            disabled={loading}
             className="w-full px-3 py-2 bg-[#111118] border border-white/[0.07] rounded-lg text-white text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:border-indigo-500/50 transition-colors focus:outline-none focus:border-indigo-500"
           >
             {EXPIRATION_OPTIONS.map((option) => (
@@ -141,10 +156,19 @@ export function ShareFileModal({
         {/* Generate Button */}
         <button
           onClick={generateShareLink}
-          disabled={loading || !!shareUrl}
-          className="w-full px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors mb-4"
+          disabled={loading}
+          className="w-full px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors mb-4 flex items-center justify-center gap-2"
         >
-          {loading ? "Generating..." : shareUrl ? "Link Generated" : "Generate Link"}
+          {loading ? (
+            <>
+              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              Generating...
+            </>
+          ) : shareUrl ? (
+            "Regenerate Link"
+          ) : (
+            "Generate Link"
+          )}
         </button>
 
         {/* Error */}
@@ -180,7 +204,7 @@ export function ShareFileModal({
                 className="flex-1 px-3 py-2 bg-[#111118] border border-white/[0.07] text-white text-sm rounded-lg hover:border-indigo-500/50 transition-colors"
                 title="Copy as Markdown link"
               >
-                Copy MD
+                Copy Markdown
               </button>
             </div>
 

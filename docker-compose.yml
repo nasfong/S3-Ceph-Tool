@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   s3-ceph-tool:
-    image: nasfong/s3-ceph-tool:latest
+    image: nasfong/s3-ceph-tool:testing
     container_name: s3-ceph-tool
     ports:
       - "3000:80"
@@ -11,5 +11,5 @@ services:
       NEXT_PUBLIC_KEYCLOAK_REALM: cloud
       NEXT_PUBLIC_KEYCLOAK_CLIENT_ID: cloud_user
       NEXT_PUBLIC_GATEWAY_URL: https://gateway.sabay.com/graphql
-      NEXT_PUBLIC_S3_ENDPOINT: https://fsgw.sabay.test
-      NEXT_PUBLIC_CERTIFICATE: false
+      NEXT_PUBLIC_S3_ENDPOINT: https://fsgw.sabay.com
+      NEXT_PUBLIC_CERTIFICATE: true

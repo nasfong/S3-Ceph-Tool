@@ -12,6 +12,7 @@ export default function HomePage() {
   const [isChecking, setIsChecking] = useState(true);
   const { authenticated } = useAuth();
   useEffect(() => {
+    console.log("authenticated",authenticated)
     if (authenticated) {
       router.replace("/buckets");
     } else {

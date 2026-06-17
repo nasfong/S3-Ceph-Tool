@@ -4,6 +4,7 @@ import { useState } from "react";
 import { S3Object } from "@/lib/types";
 import { formatSize, formatDate, getFileIcon } from "@/lib/format";
 import { getFileName } from "@/lib/s3-prefix";
+import { TrashIcon } from "../icons/BucketPageIcons";
 
 type FileRowProps = {
   file: S3Object;
@@ -124,10 +125,10 @@ export function FileRow({
         <button
           onClick={handleDeleteFolder}
           disabled={deleting}
-          className="col-span-2 text-right text-red-400 hover:text-red-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="col-span-2 text-right text-red-400 hover:text-red-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-end"
           title="Delete folder"
         >
-          {deleting ? "Deleting..." : "🗑️"}
+          {deleting ? "Deleting..." : <TrashIcon />}
         </button>
       </div>
     );

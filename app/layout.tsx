@@ -30,7 +30,7 @@ export default function RootLayout({
     >
       <head>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/tabler-icons.min.css" />
-        <script src="/env.js" />
+        <script src="/env.js" async={false} />
       </head>
       <body className="min-h-full flex flex-col">
         <AuthProvider>
