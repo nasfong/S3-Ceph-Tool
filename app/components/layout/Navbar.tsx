@@ -38,8 +38,9 @@ export function Navbar({ credentials, onLogout }: NavbarProps) {
         <div className="flex items-center gap-3 select-none">
           <div className="relative flex h-8 w-8 items-center justify-center">
             <div className="absolute inset-0 rounded-lg bg-indigo-500/20 blur-sm" />
-            <div className="relative flex h-8 w-8 items-center justify-center rounded-lg border border-indigo-400/30 bg-indigo-500/10 text-indigo-300 text-base">
-              ⬡
+            <div className="relative flex h-8 w-8 items-center justify-center rounded-lg border border-indigo-400/30 bg-indigo-500/10">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/favicon.svg" alt="S3 Browser logo" className="h-5 w-5" />
             </div>
           </div>
           <div className="flex flex-col leading-none">

@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   s3-ceph-tool:
-    image: nasfong/s3-ceph-tool:testing
+    image: nasfong/s3-ceph-tool:production
     container_name: s3-ceph-tool
     ports:
       - "3000:80"

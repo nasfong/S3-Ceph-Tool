@@ -26,7 +26,6 @@ export const initializeKeycloak = async (): Promise<Keycloak> => {
       onLoad: "login-required",
       pkceMethod: "S256",
       checkLoginIframe: false,
-      redirectUri: typeof window !== "undefined" ? window.location.origin : undefined,
     });
     
     console.log("[Keycloak] Initialization successful, authenticated:", authenticated);

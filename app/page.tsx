@@ -42,6 +42,10 @@ export default function HomePage() {
         <aside className="relative hidden overflow-hidden border-r border-white/8 bg-[#0a0a0f] lg:col-span-2 lg:flex lg:flex-col lg:justify-between">
           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(99,102,241,0.25)_1px,transparent_1px),linear-gradient(90deg,rgba(99,102,241,0.25)_1px,transparent_1px)] bg-size-[36px_36px] opacity-25" />
           <div className="relative z-10 p-10">
+            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl border border-indigo-400/30 bg-indigo-500/10">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/favicon.svg" alt="S3 Browser logo" className="h-7 w-7" />
+            </div>
             <p className="mb-3 text-xs uppercase tracking-[0.08em] text-gray-500">S3 Browser</p>
             <h1 className="text-4xl font-semibold tracking-tight text-transparent bg-clip-text bg-linear-to-r from-[#a78bfa] to-[#6366f1]">
               S3 Browser
