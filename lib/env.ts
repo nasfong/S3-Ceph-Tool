@@ -7,12 +7,12 @@ declare global {
 
 // ✅ Read process.env with STATIC keys (Next.js can replace these at build time)
 const buildTimeEnv: Record<string, string> = {
-  NEXT_PUBLIC_KEYCLOAK_URL:        process.env.NEXT_PUBLIC_KEYCLOAK_URL        ?? "",
-  NEXT_PUBLIC_KEYCLOAK_REALM:      process.env.NEXT_PUBLIC_KEYCLOAK_REALM      ?? "",
-  NEXT_PUBLIC_KEYCLOAK_CLIENT_ID:  process.env.NEXT_PUBLIC_KEYCLOAK_CLIENT_ID  ?? "",
-  NEXT_PUBLIC_GATEWAY_URL:         process.env.NEXT_PUBLIC_GATEWAY_URL         ?? "",
-  NEXT_PUBLIC_S3_ENDPOINT:         process.env.NEXT_PUBLIC_S3_ENDPOINT         ?? "",
-  NEXT_PUBLIC_CERTIFICATE:         process.env.NEXT_PUBLIC_CERTIFICATE         ?? "",
+  NEXT_PUBLIC_KEYCLOAK_URL:        process.env.NEXT_PUBLIC_KEYCLOAK_URL        ?? "https://id.testing.sabay.com/",
+  NEXT_PUBLIC_KEYCLOAK_REALM:      process.env.NEXT_PUBLIC_KEYCLOAK_REALM      ?? "cloud",
+  NEXT_PUBLIC_KEYCLOAK_CLIENT_ID:  process.env.NEXT_PUBLIC_KEYCLOAK_CLIENT_ID  ?? "cloud_user",
+  NEXT_PUBLIC_GATEWAY_URL:         process.env.NEXT_PUBLIC_GATEWAY_URL         ?? "https://cloud-gateway.sabay.com/graphql",
+  NEXT_PUBLIC_S3_ENDPOINT:         process.env.NEXT_PUBLIC_S3_ENDPOINT         ?? "https://fsgw.sabay.test",
+  NEXT_PUBLIC_CERTIFICATE:         process.env.NEXT_PUBLIC_CERTIFICATE         ?? "false",
 };
 
 function getEnv(key: string): string {
