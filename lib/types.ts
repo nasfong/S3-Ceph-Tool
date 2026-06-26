@@ -25,7 +25,13 @@ export type BreadcrumbSegment = {
   prefix: string;
 };
 
-export type UploadStatus = "pending" | "uploading" | "done" | "error" | "cancelled";
+export type UploadStatus =
+  | "pending"
+  | "uploading"
+  | "finishing"
+  | "done"
+  | "error"
+  | "cancelled";
 
 export type UploadItem = {
   id: string;

@@ -2,14 +2,31 @@ version: "3.8"
 
 services:
   s3-ceph-tool:
-    image: nasfong/s3-ceph-tool:production
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+
     container_name: s3-ceph-tool
+
     ports:
-      - "3000:80"
+      - "3000:3000"
+
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+
     environment:
-      NEXT_PUBLIC_KEYCLOAK_URL: https://sso.sabay.com
+      NODE_ENV: development
+      WATCHPACK_POLLING: "true"
+
+      NEXT_PUBLIC_KEYCLOAK_URL: https://id.testing.sabay.com
       NEXT_PUBLIC_KEYCLOAK_REALM: cloud
       NEXT_PUBLIC_KEYCLOAK_CLIENT_ID: cloud_user
-      NEXT_PUBLIC_GATEWAY_URL: https://gateway.sabay.com/graphql
-      NEXT_PUBLIC_S3_ENDPOINT: https://fsgw.sabay.com
-      NEXT_PUBLIC_CERTIFICATE: true
+      NEXT_PUBLIC_GATEWAY_URL: https://cloud-gateway.testing.sabay.com/graphql
+      NEXT_PUBLIC_S3_ENDPOINT: https://fsgw.sabay.test
+      NEXT_PUBLIC_CERTIFICATE: "false"
+
+    mem_limit: 512m
+    mem_reservation: 256m
+    cpus: 0.5
