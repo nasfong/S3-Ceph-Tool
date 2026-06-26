@@ -4,6 +4,9 @@ import https from "https";
 import { NextRequest, NextResponse } from "next/server";
 import { Readable } from "stream";
 
+export const runtime = "nodejs";
+export const maxDuration = 300;
+
 export async function POST(req: NextRequest) {
   try {
     const endpoint = req.headers.get("x-s3-endpoint") || "";
@@ -24,16 +27,20 @@ export async function POST(req: NextRequest) {
       forcePathStyle: true,
       region: "us-east-1",
       requestHandler: {
-        requestTimeout: 30000,
+        // Time allowed for a single socket to stall, not the whole upload.
+        // Generous so large multipart parts on slow links don't get killed.
+        requestTimeout: 0,
+        connectionTimeout: 10000,
         httpsAgent: new https.Agent({
           rejectUnauthorized,
+          keepAlive: true,
         }),
       },
     });
 
     if (!req.body || !bucket || !key) {
       console.error("[POST /api/s3/upload] Missing fields:", {
-        hasFile: !!!req.body,
+        hasFile: !req.body,
         hasBucket: !!bucket,
         hasKey: !!key,
       });
@@ -43,20 +50,20 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    console.log("[POST /api/s3/upload] Starting upload:", {
-      fileName,
-      fileSize,
-      contentType,
-      bucket,
-      key,
+    const isDev = process.env.NODE_ENV !== "production";
 
-      keyLength: key.length,
-      endpoint,
-    });
+    if (isDev) {
+      console.log("[POST /api/s3/upload] Starting upload:", {
+        fileName,
+        fileSize,
+        contentType,
+        bucket,
+        key,
+        keyLength: key.length,
+        endpoint,
+      });
+    }
 
-    console.log("[POST /api/s3/upload] Buffer created:", {
-      key,
-    });
     const upload = new Upload({
       client,
       params: {
@@ -71,15 +78,19 @@ export async function POST(req: NextRequest) {
       partSize: 10 * 1024 * 1024,
       leavePartsOnError: false,
     });
-    upload.on("httpUploadProgress", (progress) => {
-      console.log(progress);
-    });
+    if (isDev) {
+      upload.on("httpUploadProgress", (progress) => {
+        console.log("[POST /api/s3/upload] progress:", progress);
+      });
+    }
     await upload.done();
 
-    console.log("[POST /api/s3/upload] Upload successful:", {
-      key,
-      size: fileSize,
-    });
+    if (isDev) {
+      console.log("[POST /api/s3/upload] Upload successful:", {
+        key,
+        size: fileSize,
+      });
+    }
     return NextResponse.json({ success: true, key });
   } catch (err) {
     console.error("[POST /api/s3/upload]", err);
