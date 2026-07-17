@@ -1,3 +1,5 @@
+export type AuthMode = "keycloak" | "credentials";
+
 export type S3Credentials = {
   endpoint: string;
   accessKey: string;

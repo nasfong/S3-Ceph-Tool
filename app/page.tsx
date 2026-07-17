@@ -4,35 +4,25 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoginForm } from "./components/auth/LoginForm";
 import { useAuth } from "@/context/AuthProvider";
+import { S3Credentials } from "@/lib/types";
 
 export default function HomePage() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [isChecking, setIsChecking] = useState(true);
-  const { authenticated } = useAuth();
+  const [showKeyForm, setShowKeyForm] = useState(false);
+  const { authenticated, loginWithKeycloak, loginWithCredentials } = useAuth();
+
   useEffect(() => {
-    console.log("authenticated",authenticated)
     if (authenticated) {
       router.replace("/buckets");
-    } else {
-      setIsChecking(false);
     }
   }, [router, authenticated]);
 
-  const handleLoginSuccess = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      router.push("/buckets");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Unknown error");
-    } finally {
-      setLoading(false);
-    }
+  const handleLoginSuccess = (creds: S3Credentials) => {
+    loginWithCredentials(creds);
+    router.push("/buckets");
   };
 
-  if (isChecking) {
+  if (authenticated) {
     return null;
   }
 
@@ -68,11 +58,47 @@ export default function HomePage() {
         </aside>
 
         <section className="relative flex items-center justify-center bg-[#111118] px-6 py-12 lg:col-span-3">
-          <LoginForm
-            onSuccess={handleLoginSuccess}
-            loading={loading}
-            error={error}
-          />
+          {showKeyForm ? (
+            <div className="w-full max-w-xl">
+              <LoginForm onSuccess={handleLoginSuccess} />
+              <button
+                type="button"
+                onClick={() => setShowKeyForm(false)}
+                className="mt-6 w-full text-center text-sm text-[#888899] transition-colors duration-150 hover:text-[#a5a4c0]"
+              >
+                ← Back to sign-in options
+              </button>
+            </div>
+          ) : (
+            <div className="w-full max-w-xl rounded-2xl border border-white/8 bg-[#111118]/90 p-8 shadow-[0_24px_80px_-32px_rgba(99,102,241,0.55)] sm:p-10">
+              <h2 className="text-2xl font-semibold tracking-tight text-[#f1f0ff]">Sign in</h2>
+              <p className="mt-2 text-sm text-[#888899]">
+                Continue with your Sabay account, or connect using S3 access keys.
+              </p>
+
+              <button
+                type="button"
+                onClick={loginWithKeycloak}
+                className="mt-8 flex w-full items-center justify-center gap-2 rounded-xl bg-linear-to-br from-[#6366f1] to-[#8b5cf6] px-4 py-2.5 text-sm font-semibold text-white transition-all duration-150 hover:-translate-y-px hover:brightness-110"
+              >
+                Continue with Keycloak
+              </button>
+
+              <div className="my-6 flex items-center gap-4">
+                <span className="h-px flex-1 bg-white/8" />
+                <span className="text-[11px] uppercase tracking-[0.08em] text-[#888899]">or</span>
+                <span className="h-px flex-1 bg-white/8" />
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setShowKeyForm(true)}
+                className="flex w-full items-center justify-center gap-2 rounded-xl border border-white/8 bg-[#1c1c28] px-4 py-2.5 text-sm font-medium text-[#f1f0ff] transition-all duration-150 hover:border-indigo-400/60 hover:bg-[#22222f]"
+              >
+                Use S3 access keys
+              </button>
+            </div>
+          )}
         </section>
       </div>
     </main>
