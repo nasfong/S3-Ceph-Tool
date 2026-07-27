@@ -143,7 +143,7 @@ export default function BucketPage() {
           {/* New folder */}
           <button
             onClick={() => setShowCreateFolderModal(true)}
-            className="flex items-center gap-1.5 rounded-lg border border-amber-400/20 bg-amber-500/8 px-3 py-1.5 text-xs font-medium text-amber-300 transition-all duration-150 hover:border-amber-400/40 hover:bg-amber-500/15"
+            className="flex items-center gap-1.5 rounded-lg border border-warning/20 bg-warning/8 px-3 py-1.5 text-xs font-medium text-warning transition-all duration-150 hover:border-warning/40 hover:bg-warning/15"
           >
             <FolderPlusIcon />
             New Folder
@@ -152,7 +152,7 @@ export default function BucketPage() {
           {/* Upload */}
           <button
             onClick={() => setShowUploadModal(true)}
-            className="flex items-center gap-1.5 rounded-lg border border-indigo-400/20 bg-indigo-500/8 px-3 py-1.5 text-xs font-medium text-accent transition-all duration-150 hover:border-indigo-400/40 hover:bg-indigo-500/15"
+            className="flex items-center gap-1.5 rounded-lg border border-brand-400/20 bg-brand-500/8 px-3 py-1.5 text-xs font-medium text-accent transition-all duration-150 hover:border-brand-400/40 hover:bg-brand-500/15"
           >
             <UploadIcon />
             Upload

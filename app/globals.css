@@ -10,7 +10,7 @@
   color-scheme: dark;
 
   /* surfaces */
-  --app-bg: #0a0a0f;
+  --app-bg: #727272;
   --surface: #111118;
   --surface-2: #0e0e1a;
   --surface-3: #1c1c28;
@@ -33,8 +33,10 @@
   --navbar-scrolled: rgba(8, 8, 14, 0.92);
 
   /* accents (foreground shades tuned for contrast per theme) */
-  --accent: #a5b4fc; /* indigo-300 */
+  --accent: #7bb8e5; /* brand-300 — light blue reads well on dark */
   --danger: #f87171; /* red-400 */
+  --warning: #fbbf24; /* amber-400 — reads well on dark */
+  --success: #34d399; /* emerald-400 — reads well on dark */
 
   /* legacy tokens kept for compatibility */
   --background: var(--app-bg);
@@ -50,8 +52,8 @@
   --surface-3: #eceef4;
 
   --text-primary: #16161d;
-  --text-secondary: #4a4a5e;
-  --text-muted: #6f6f7e;
+  --text-secondary: #45455a;
+  --text-muted: #5b5b6b;
 
   --hairline: rgba(17, 17, 32, 0.1);
   --hairline-strong: rgba(17, 17, 32, 0.18);
@@ -63,8 +65,25 @@
   --navbar: rgba(255, 255, 255, 0.72);
   --navbar-scrolled: rgba(255, 255, 255, 0.9);
 
-  --accent: #4f46e5; /* indigo-600 */
+  --accent: #1c75bc; /* brand-500 — primary blue, AA on white (4.86:1) */
   --danger: #dc2626; /* red-600 */
+  --warning: #b45309; /* amber-700 — AA on light (5.0:1) */
+  --success: #047857; /* emerald-700 — AA on light (5.5:1) */
+}
+
+/* ------------------------------------------------------------------ *
+ * Brand palette — the app's primary color (#1C75BC) as a fixed hue
+ * ramp. Values do not flip between themes; opacity modifiers adapt to
+ * whatever surface they sit on via color-mix. The per-theme readable
+ * foreground shade lives in --accent above.
+ * ------------------------------------------------------------------ */
+@theme {
+  --color-brand-200: #aed3f0;
+  --color-brand-300: #7bb8e5;
+  --color-brand-400: #3d93d6;
+  --color-brand-500: #1c75bc;
+  --color-brand-600: #1863a1;
+  --color-brand-700: #155286;
 }
 
 @theme inline {
@@ -89,6 +108,8 @@
 
   --color-accent: var(--accent);
   --color-danger: var(--danger);
+  --color-warning: var(--warning);
+  --color-success: var(--success);
 
   /* legacy */
   --color-background: var(--background);

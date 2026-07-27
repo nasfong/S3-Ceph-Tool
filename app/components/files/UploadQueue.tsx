@@ -24,7 +24,7 @@ export function UploadQueue({ items, overallProgress, onCancel, onRemove }: Uplo
       {uploadingCount > 0 && (
         <div className="h-0.75 w-full bg-fill">
           <div
-            className="h-full bg-linear-to-r from-indigo-500 to-violet-500 transition-all duration-500"
+            className="h-full bg-linear-to-r from-brand-500 to-brand-300 transition-all duration-500"
             style={{ width: `${overallProgress}%` }}
           />
         </div>

@@ -109,7 +109,7 @@ export function CreateFolderModal({
               onKeyPress={handleKeyPress}
               placeholder="e.g., Documents, Photos, 2024..."
               disabled={loading}
-              className="w-full rounded-lg border border-hairline-strong bg-app px-3 py-2 text-sm text-primary placeholder-gray-600 transition-all duration-150 focus:border-indigo-500 focus:outline-none disabled:opacity-50"
+              className="w-full rounded-lg border border-hairline-strong bg-app px-3 py-2 text-sm text-primary placeholder:text-muted transition-all duration-150 focus:border-brand-500 focus:outline-none disabled:opacity-50"
               autoFocus
             />
           </div>
@@ -133,7 +133,7 @@ export function CreateFolderModal({
           <button
             onClick={handleCreate}
             disabled={loading || !folderName.trim()}
-            className="flex-1 rounded-lg border border-indigo-400/30 bg-indigo-500/10 px-3 py-2 text-sm font-medium text-accent transition-all duration-150 hover:border-indigo-400/60 hover:bg-indigo-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 rounded-lg border border-brand-400/30 bg-brand-500/10 px-3 py-2 text-sm font-medium text-accent transition-all duration-150 hover:border-brand-400/60 hover:bg-brand-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "Creating..." : "Create"}
           </button>

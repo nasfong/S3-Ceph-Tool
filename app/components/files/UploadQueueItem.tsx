@@ -38,7 +38,7 @@ export function UploadQueueItem({ item, onCancel, onRemove }: UploadQueueItemPro
           {item.status === "uploading" && (
             <div className="flex-1 h-0.75 rounded-full bg-fill overflow-hidden">
               <div
-                className="h-full rounded-full bg-linear-to-r from-indigo-500 to-violet-400 transition-all duration-300"
+                className="h-full rounded-full bg-linear-to-r from-brand-500 to-brand-300 transition-all duration-300"
                 style={{ width: `${item.progress}%` }}
               />
             </div>
@@ -64,7 +64,7 @@ export function UploadQueueItem({ item, onCancel, onRemove }: UploadQueueItemPro
           </button>
         )}
         {item.status === "done" && (
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500/15 text-emerald-400">
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-success/15 text-success">
             <CheckIcon />
           </span>
         )}

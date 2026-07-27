@@ -55,7 +55,7 @@ function AclToggle({ isPublic, loading, onToggle }: AclToggleProps) {
     >
       {/* label left */}
       <span
-        className={`text-[11px] font-medium font-mono tracking-wide transition-colors duration-200 ${isPublic ? "text-muted" : "text-amber-400/90"
+        className={`text-[11px] font-medium font-mono tracking-wide transition-colors duration-200 ${isPublic ? "text-muted" : "text-warning"
           }`}
       >
         <LockIcon />
@@ -99,7 +99,7 @@ function AclToggle({ isPublic, loading, onToggle }: AclToggleProps) {
 
       {/* label right */}
       <span
-        className={`text-[11px] font-medium font-mono tracking-wide transition-colors duration-200 ${isPublic ? "text-emerald-400" : "text-muted"
+        className={`text-[11px] font-medium font-mono tracking-wide transition-colors duration-200 ${isPublic ? "text-success" : "text-muted"
           }`}
       >
         <GlobeIcon />
@@ -129,20 +129,20 @@ export function BucketCard({
     <div
       onClick={onClick}
       className={`group relative cursor-pointer rounded-xl border transition-all duration-200 overflow-hidden ${isSelected
-          ? "border-indigo-500/60 bg-indigo-500/6 shadow-[0_0_0_1px_rgba(99,102,241,0.15),0_4px_24px_rgba(99,102,241,0.1)]"
-          : "border-hairline bg-surface hover:border-indigo-500/30 hover:bg-surface-2 hover:shadow-[0_4px_24px_rgba(0,0,0,0.3)] hover:-translate-y-0.5"
+          ? "border-brand-500/60 bg-brand-500/6 shadow-[0_0_0_1px_rgba(28,117,188,0.15),0_4px_24px_rgba(28,117,188,0.1)]"
+          : "border-hairline bg-surface hover:border-brand-500/30 hover:bg-surface-2 hover:shadow-[0_4px_24px_rgba(0,0,0,0.3)] hover:-translate-y-0.5"
         }`}
     >
       {/* selected left bar */}
       {isSelected && (
-        <span className="absolute left-0 top-3 bottom-3 w-0.75 rounded-r-full bg-indigo-500" />
+        <span className="absolute left-0 top-3 bottom-3 w-0.75 rounded-r-full bg-brand-500" />
       )}
 
       {/* top shimmer line */}
       <div
         className={`absolute inset-x-0 top-0 h-px transition-opacity duration-200 ${isSelected
-            ? "opacity-100 bg-linear-to-r from-transparent via-indigo-400/60 to-transparent"
-            : "opacity-0 group-hover:opacity-100 bg-linear-to-r from-transparent via-indigo-400/30 to-transparent"
+            ? "opacity-100 bg-linear-to-r from-transparent via-brand-400/60 to-transparent"
+            : "opacity-0 group-hover:opacity-100 bg-linear-to-r from-transparent via-brand-400/30 to-transparent"
           }`}
       />
 
@@ -152,8 +152,8 @@ export function BucketCard({
           <div className="flex items-center gap-3">
             <div
               className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border transition-colors duration-200 ${isSelected
-                  ? "border-indigo-400/30 bg-indigo-500/20 text-accent"
-                  : "border-hairline bg-fill text-accent group-hover:border-indigo-400/20 group-hover:bg-indigo-500/10"
+                  ? "border-brand-400/30 bg-brand-500/20 text-accent"
+                  : "border-hairline bg-fill text-accent group-hover:border-brand-400/20 group-hover:bg-brand-500/10"
                 }`}
             >
               📦

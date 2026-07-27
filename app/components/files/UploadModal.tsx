@@ -67,7 +67,7 @@ export function UploadModal({
         {/* ── Header ── */}
         <div className="relative flex items-center justify-between border-b border-hairline px-6 py-4">
           {/* top accent */}
-          <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-indigo-500/50 to-transparent" />
+          <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-brand-500/50 to-transparent" />
 
           <div>
             <h2 className="text-[15px] font-semibold text-primary">Upload Files</h2>

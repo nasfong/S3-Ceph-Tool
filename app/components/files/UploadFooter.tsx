@@ -36,7 +36,7 @@ export function UploadFooter({
         {doneCount > 0 && (
           <>
             <span className="text-muted">·</span>
-            <span className="text-emerald-400/70">{doneCount} done</span>
+            <span className="text-success">{doneCount} done</span>
           </>
         )}
         {errorCount > 0 && (
@@ -68,7 +68,7 @@ export function UploadFooter({
           <button
             onClick={onStartUpload}
             disabled={pendingCount === 0}
-            className="flex items-center gap-1.5 rounded-lg bg-indigo-600 px-4 py-1.5 text-xs font-semibold text-white transition-all duration-150 hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-1.5 text-xs font-semibold text-white transition-all duration-150 hover:bg-brand-500 disabled:cursor-not-allowed disabled:opacity-40"
           >
             {uploadingCount > 0 ? (
               <>

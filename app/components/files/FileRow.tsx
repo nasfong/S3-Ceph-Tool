@@ -100,7 +100,7 @@ export function FileRow({
     return (
       <div
         onClick={handleRowClick}
-        className={`grid grid-cols-12 items-center border-b border-hairline px-4 py-3 transition-all duration-150 cursor-pointer ${isSelected ? "bg-indigo-500/10" : "hover:bg-fill-faint"}`}
+        className={`grid grid-cols-12 items-center border-b border-hairline px-4 py-3 transition-all duration-150 cursor-pointer ${isSelected ? "bg-brand-500/10" : "hover:bg-fill-faint"}`}
       >
         <span className="col-span-1 flex items-center">
           <input
@@ -113,7 +113,7 @@ export function FileRow({
             className="h-4 w-4 rounded border-hairline cursor-pointer"
           />
         </span>
-        <span className="col-span-1 text-base text-amber-400">
+        <span className="col-span-1 text-base text-warning">
           📁
         </span>
         <div className="col-span-5 min-w-0">
@@ -137,7 +137,7 @@ export function FileRow({
   return (
     <div
       onClick={handleRowClick}
-      className={`grid grid-cols-12 items-center border-b border-hairline px-4 py-3 transition-all duration-150 cursor-pointer ${isSelected ? "bg-indigo-500/10" : "hover:bg-fill-faint"}`}
+      className={`grid grid-cols-12 items-center border-b border-hairline px-4 py-3 transition-all duration-150 cursor-pointer ${isSelected ? "bg-brand-500/10" : "hover:bg-fill-faint"}`}
     >
       <span className="col-span-1 flex items-center">
         <input

@@ -31,15 +31,15 @@ export function Navbar({ credentials, onLogout }: NavbarProps) {
         }`}
     >
       {/* top accent line */}
-      <div className="absolute inset-x-0 top-0 h-[1.5px] bg-linear-to-r from-transparent via-indigo-500/60 to-transparent" />
+      <div className="absolute inset-x-0 top-0 h-[1.5px] bg-linear-to-r from-transparent via-brand-500/60 to-transparent" />
 
       <div className="mx-auto flex h-15 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 
         {/* ── Left: Logo ── */}
         <div className="flex items-center gap-3 select-none">
           <div className="relative flex h-8 w-8 items-center justify-center">
-            <div className="absolute inset-0 rounded-lg bg-indigo-500/20 blur-sm" />
-            <div className="relative flex h-8 w-8 items-center justify-center rounded-lg border border-indigo-400/30 bg-indigo-500/10">
+            <div className="absolute inset-0 rounded-lg bg-brand-500/20 blur-sm" />
+            <div className="relative flex h-8 w-8 items-center justify-center rounded-lg border border-brand-400/30 bg-brand-500/10">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/favicon.svg" alt="S3 Browser logo" className="h-5 w-5" />
             </div>
@@ -61,7 +61,7 @@ export function Navbar({ credentials, onLogout }: NavbarProps) {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
             <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
           </span>
-          <span className="truncate font-mono text-[11px] text-indigo-200/70">
+          <span className="truncate font-mono text-[11px] text-primary">
             {shortEndpoint}
           </span>
         </div>

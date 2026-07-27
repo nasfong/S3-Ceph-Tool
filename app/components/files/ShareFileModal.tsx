@@ -143,7 +143,7 @@ export function ShareFileModal({
               setExpiresAt(null);
             }}
             disabled={loading}
-            className="w-full px-3 py-2 bg-surface border border-hairline rounded-lg text-primary text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:border-indigo-500/50 transition-colors focus:outline-none focus:border-indigo-500"
+            className="w-full px-3 py-2 bg-surface border border-hairline rounded-lg text-primary text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:border-brand-500/50 transition-colors focus:outline-none focus:border-brand-500"
           >
             {EXPIRATION_OPTIONS.map((option) => (
               <option key={option.value} value={option.value}>
@@ -157,7 +157,7 @@ export function ShareFileModal({
         <button
           onClick={generateShareLink}
           disabled={loading}
-          className="w-full px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors mb-4 flex items-center justify-center gap-2"
+          className="w-full px-4 py-2 bg-brand-600 text-white font-medium rounded-lg hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors mb-4 flex items-center justify-center gap-2"
         >
           {loading ? (
             <>
@@ -195,20 +195,20 @@ export function ShareFileModal({
             <div className="flex gap-2">
               <button
                 onClick={copyToClipboard}
-                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-surface border border-hairline text-primary text-sm rounded-lg hover:border-indigo-500/50 transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-surface border border-hairline text-primary text-sm rounded-lg hover:border-brand-500/50 transition-colors"
               >
                 {copied ? "✓ Copied" : "📋 Copy"}
               </button>
               <button
                 onClick={copyAsMarkdown}
-                className="flex-1 px-3 py-2 bg-surface border border-hairline text-primary text-sm rounded-lg hover:border-indigo-500/50 transition-colors"
+                className="flex-1 px-3 py-2 bg-surface border border-hairline text-primary text-sm rounded-lg hover:border-brand-500/50 transition-colors"
                 title="Copy as Markdown link"
               >
                 Copy Markdown
               </button>
             </div>
 
-            <p className="text-xs text-muted bg-amber-500/10 border border-amber-500/20 p-2 rounded">
+            <p className="text-xs text-secondary bg-warning/10 border border-warning/20 p-2 rounded">
               ℹ️ This link will automatically expire after the selected time. Anyone with this link can access the file until then.
             </p>
           </div>
@@ -217,7 +217,7 @@ export function ShareFileModal({
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="w-full mt-4 px-4 py-2 border border-hairline text-secondary font-medium rounded-lg hover:border-indigo-500/50 transition-colors"
+          className="w-full mt-4 px-4 py-2 border border-hairline text-secondary font-medium rounded-lg hover:border-brand-500/50 transition-colors"
         >
           Close
         </button>

@@ -115,7 +115,7 @@ function VideoPreview({ src, filename }: { src: string; filename: string }) {
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="flex h-12 w-12 items-center justify-center rounded-full border border-hairline-strong bg-fill backdrop-blur-sm">
               {/* play-like spinner */}
-              <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-hairline-strong border-t-indigo-400" />
+              <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-hairline-strong border-t-brand-400" />
             </div>
           </div>
         </div>
@@ -349,14 +349,14 @@ export function FileDetailModal({
             <button
               onClick={handleDownload}
               disabled={!presignedUrl || loadingPresign}
-              className="flex-1 rounded-lg border border-indigo-400/30 px-3 py-2 text-xs font-medium text-accent transition-all duration-150 hover:border-indigo-400/60 hover:bg-indigo-500/10 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex-1 rounded-lg border border-brand-400/30 px-3 py-2 text-xs font-medium text-accent transition-all duration-150 hover:border-brand-400/60 hover:bg-brand-500/10 disabled:cursor-not-allowed disabled:opacity-50"
             >
               ⬇️ Download
             </button>
             <button
               onClick={() => setShareOpen(true)}
               disabled={!presignedUrl || loadingPresign}
-              className="flex-1 rounded-lg border border-amber-400/30 px-3 py-2 text-xs font-medium text-amber-300 transition-all duration-150 hover:border-amber-400/60 hover:bg-amber-500/10 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex-1 rounded-lg border border-warning/30 px-3 py-2 text-xs font-medium text-warning transition-all duration-150 hover:border-warning/60 hover:bg-warning/10 disabled:cursor-not-allowed disabled:opacity-50"
             >
               🔗 Share
             </button>

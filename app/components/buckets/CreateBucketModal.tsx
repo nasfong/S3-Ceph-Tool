@@ -91,7 +91,7 @@ export function CreateBucketModal({
         {error && (
           <div className={`mb-4 rounded-lg border-l-[3px] px-3 py-2 text-xs ${
             error.includes("limit reached") || error.includes("TooManyBuckets")
-              ? "border-amber-500 bg-amber-500/10 text-amber-300"
+              ? "border-warning/60 bg-warning/10 text-warning"
               : "border-red-500 bg-red-500/10 text-danger"
           }`}>
             {error}
@@ -108,7 +108,7 @@ export function CreateBucketModal({
               value={bucketName}
               onChange={(e) => setBucketName(e.target.value)}
               placeholder="my-bucket"
-              className="w-full rounded-lg border border-hairline bg-surface-3 px-3 py-2 font-mono text-sm text-primary outline-none transition-all duration-150 placeholder:text-muted focus:border-indigo-400 focus:shadow-[0_0_0_3px_rgba(99,102,241,0.2)]"
+              className="w-full rounded-lg border border-hairline bg-surface-3 px-3 py-2 font-mono text-sm text-primary outline-none transition-all duration-150 placeholder:text-muted focus:border-brand-400 focus:shadow-[0_0_0_3px_rgba(28,117,188,0.2)]"
             />
           </div>
 
@@ -123,7 +123,7 @@ export function CreateBucketModal({
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-linear-to-r from-indigo-500 to-indigo-600 px-3 py-2 text-xs font-semibold text-white transition-all duration-150 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-linear-to-r from-brand-500 to-brand-600 px-3 py-2 text-xs font-semibold text-white transition-all duration-150 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading && (
                 <span className="inline-block h-3 w-3 animate-spin rounded-full border border-hairline-strong border-t-white" />

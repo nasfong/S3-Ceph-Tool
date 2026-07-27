@@ -5,7 +5,7 @@
 export const FullScreenSpinner = () => (
   <div className="flex items-center justify-center min-h-screen bg-app">
     <div className="text-center">
-      <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500 mb-4" />
+      <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-500 mb-4" />
       <p className="text-muted">Loading...</p>
     </div>
   </div>
@@ -14,7 +14,7 @@ export const FullScreenSpinner = () => (
 const LogoutButton = ({ onLogout }: { onLogout: () => void }) => (
   <button
     onClick={onLogout}
-    className="mt-4 px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors"
+    className="mt-4 px-4 py-2 text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 rounded-lg transition-colors"
   >
     Logout
   </button>

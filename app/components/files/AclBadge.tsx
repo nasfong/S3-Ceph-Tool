@@ -9,8 +9,8 @@ export function AclBadge({ isPublic }: { isPublic: boolean }) {
       <span
         className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium border ${
           isPublic
-          ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-300"
-          : "border-amber-500/20 bg-amber-500/10 text-amber-300"
+          ? "border-success/20 bg-success/10 text-success"
+          : "border-warning/20 bg-warning/10 text-warning"
         }`}
       >
         {isPublic ? <GlobeIcon /> : <LockIcon />}

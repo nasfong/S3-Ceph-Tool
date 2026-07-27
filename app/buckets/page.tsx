@@ -139,7 +139,7 @@ export default function BucketsPage() {
           <div className="flex gap-2">
             <button
               onClick={() => setShowCreateModal(true)}
-              className="rounded-lg border border-indigo-400/30 bg-indigo-500/10 px-4 py-2 text-sm font-medium text-accent transition-all duration-150 hover:border-indigo-400/60 hover:bg-indigo-500/20"
+              className="rounded-lg border border-brand-400/30 bg-brand-500/10 px-4 py-2 text-sm font-medium text-accent transition-all duration-150 hover:border-brand-400/60 hover:bg-brand-500/20"
             >
               ➕ New Bucket
             </button>

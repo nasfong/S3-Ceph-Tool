@@ -8,7 +8,7 @@ type BucketAclBadgeProps = {
 export function BucketAclBadge({ isPublic }: BucketAclBadgeProps) {
   if (isPublic === true) {
     return (
-      <span className="rounded-full bg-green-500/15 px-2.5 py-0.5 text-[11px] text-green-400">
+      <span className="rounded-full bg-success/15 px-2.5 py-0.5 text-[11px] text-success">
         🌐 Public
       </span>
     );
@@ -16,7 +16,7 @@ export function BucketAclBadge({ isPublic }: BucketAclBadgeProps) {
 
   if (isPublic === false) {
     return (
-      <span className="rounded-full bg-amber-500/15 px-2.5 py-0.5 text-[11px] text-amber-400">
+      <span className="rounded-full bg-warning/15 px-2.5 py-0.5 text-[11px] text-warning">
         🔒 Private
       </span>
     );

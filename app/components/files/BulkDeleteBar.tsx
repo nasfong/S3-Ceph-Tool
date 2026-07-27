@@ -12,12 +12,12 @@ export function BulkDeleteBar({
   onClear: () => void;
 }) {
   return (
-    <div className="mt-4 flex items-center gap-3 rounded-xl border border-indigo-500/20 bg-indigo-500/[0.07] px-4 py-3 backdrop-blur-sm">
+    <div className="mt-4 flex items-center gap-3 rounded-xl border border-brand-500/20 bg-brand-500/[0.07] px-4 py-3 backdrop-blur-sm">
       {/* count pill */}
-      <span className="inline-flex items-center rounded-full border border-indigo-400/20 bg-indigo-500/15 px-2.5 py-0.5 font-mono text-xs font-semibold text-accent">
+      <span className="inline-flex items-center rounded-full border border-brand-400/20 bg-brand-500/15 px-2.5 py-0.5 font-mono text-xs font-semibold text-accent">
         {count}
       </span>
-      <span className="text-sm text-indigo-200/70">
+      <span className="text-sm text-secondary">
         item{count !== 1 ? "s" : ""} selected
       </span>
 
