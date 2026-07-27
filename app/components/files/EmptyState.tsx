@@ -14,10 +14,10 @@ export function EmptyState({ type }: EmptyStateProps) {
   const config = CONFIG[type];
 
   return (
-    <div className="flex flex-col items-center justify-center rounded-b-xl border border-t-0 border-white/8 bg-[#111118] px-6 py-16 text-center">
+    <div className="flex flex-col items-center justify-center rounded-b-xl border border-t-0 border-hairline bg-surface px-6 py-16 text-center">
       <span className="mb-3 text-5xl opacity-70">{config.icon}</span>
-      <p className="text-sm text-[#f1f0ff] font-medium">{config.title}</p>
-      <p className="mt-1 text-xs text-[#888899]">{config.subtitle}</p>
+      <p className="text-sm text-primary font-medium">{config.title}</p>
+      <p className="mt-1 text-xs text-muted">{config.subtitle}</p>
     </div>
   );
 }

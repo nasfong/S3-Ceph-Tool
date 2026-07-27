@@ -126,19 +126,19 @@ export default function BucketPage() {
 
       {/* Page header */}
       <div className="mb-6">
-        <p className="text-[11px] uppercase tracking-[0.08em] text-white/30 font-mono">{bucket}</p>
-        <h1 className="text-2xl font-semibold text-white mt-0.5">Files</h1>
+        <p className="text-[11px] uppercase tracking-[0.08em] text-muted font-mono">{bucket}</p>
+        <h1 className="text-2xl font-semibold text-primary mt-0.5">Files</h1>
       </div>
 
       {/* Toolbar */}
-      <div className="mb-6 flex items-center justify-between gap-4 rounded-xl border border-white/[0.07] bg-[#111118] px-4 py-3">
+      <div className="mb-6 flex items-center justify-between gap-4 rounded-xl border border-hairline bg-surface px-4 py-3">
         <Breadcrumbs bucket={bucket} prefix={prefix} currentPage="bucket-details" showIcons />
 
         <div className="flex items-center gap-2 ml-auto">
           {/* ACL badge */}
           {bucketInfo && <AclBadge isPublic={bucketInfo.isPublic ?? false} />}
 
-          <div className="mx-1 h-4 w-px bg-white/8" />
+          <div className="mx-1 h-4 w-px bg-fill-strong" />
 
           {/* New folder */}
           <button
@@ -152,7 +152,7 @@ export default function BucketPage() {
           {/* Upload */}
           <button
             onClick={() => setShowUploadModal(true)}
-            className="flex items-center gap-1.5 rounded-lg border border-indigo-400/20 bg-indigo-500/8 px-3 py-1.5 text-xs font-medium text-indigo-300 transition-all duration-150 hover:border-indigo-400/40 hover:bg-indigo-500/15"
+            className="flex items-center gap-1.5 rounded-lg border border-indigo-400/20 bg-indigo-500/8 px-3 py-1.5 text-xs font-medium text-accent transition-all duration-150 hover:border-indigo-400/40 hover:bg-indigo-500/15"
           >
             <UploadIcon />
             Upload

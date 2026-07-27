@@ -17,8 +17,8 @@ export function FileIcon({ type }: { type?: string }) {
     : isVideo
       ? "text-pink-400"
       : isPdf
-        ? "text-red-400"
-        : "text-indigo-400/60";
+        ? "text-danger"
+        : "text-accent/60";
 
   return (
     <svg viewBox="0 0 24 24" fill="none" className={`h-4 w-4 shrink-0 ${color}`} xmlns="http://www.w3.org/2000/svg">

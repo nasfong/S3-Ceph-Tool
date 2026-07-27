@@ -19,10 +19,10 @@ export function UploadQueue({ items, overallProgress, onCancel, onRemove }: Uplo
   const uploadingCount = items.filter((i) => i.status === "uploading").length;
 
   return (
-    <div className="rounded-xl border border-white/6 bg-white/2 overflow-hidden">
+    <div className="rounded-xl border border-hairline bg-fill-faint overflow-hidden">
       {/* overall progress bar (only while uploading) */}
       {uploadingCount > 0 && (
-        <div className="h-0.75 w-full bg-white/5">
+        <div className="h-0.75 w-full bg-fill">
           <div
             className="h-full bg-linear-to-r from-indigo-500 to-violet-500 transition-all duration-500"
             style={{ width: `${overallProgress}%` }}
@@ -30,7 +30,7 @@ export function UploadQueue({ items, overallProgress, onCancel, onRemove }: Uplo
         </div>
       )}
 
-      <div className="max-h-72 overflow-y-auto divide-y divide-white/4">
+      <div className="max-h-72 overflow-y-auto divide-y divide-hairline">
         {items.map((item) => (
           <UploadQueueItem key={item.id} item={item} onCancel={onCancel} onRemove={onRemove} />
         ))}

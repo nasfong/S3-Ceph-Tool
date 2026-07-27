@@ -62,16 +62,16 @@ export function UploadModal({
     items.length > 0 ? Math.round(items.reduce((acc, i) => acc + (i.status === "done" ? 100 : i.progress ?? 0), 0) / items.length) : 0;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="w-full max-w-lg rounded-2xl border border-white/8 bg-[#0e0e1a] shadow-[0_24px_80px_rgba(0,0,0,0.6)] overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-backdrop backdrop-blur-sm p-4">
+      <div className="w-full max-w-lg rounded-2xl border border-hairline bg-surface-2 shadow-[0_24px_80px_rgba(0,0,0,0.6)] overflow-hidden">
         {/* ── Header ── */}
-        <div className="relative flex items-center justify-between border-b border-white/6 px-6 py-4">
+        <div className="relative flex items-center justify-between border-b border-hairline px-6 py-4">
           {/* top accent */}
           <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-indigo-500/50 to-transparent" />
 
           <div>
-            <h2 className="text-[15px] font-semibold text-white">Upload Files</h2>
-            <p className="mt-0.5 font-mono text-[10px] uppercase tracking-widest text-white/25">
+            <h2 className="text-[15px] font-semibold text-primary">Upload Files</h2>
+            <p className="mt-0.5 font-mono text-[10px] uppercase tracking-widest text-muted">
               {bucket}
               {prefix ? ` / ${prefix}` : ""}
             </p>
@@ -79,7 +79,7 @@ export function UploadModal({
 
           <button
             onClick={handleClose}
-            className="flex h-7 w-7 items-center justify-center rounded-lg border border-white/7 text-white/40 transition-all duration-150 hover:border-white/20 hover:text-white"
+            className="flex h-7 w-7 items-center justify-center rounded-lg border border-hairline text-muted transition-all duration-150 hover:border-hairline-strong hover:text-primary"
           >
             <XIcon className="h-3.5 w-3.5" />
           </button>

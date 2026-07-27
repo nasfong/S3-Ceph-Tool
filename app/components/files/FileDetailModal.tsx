@@ -31,15 +31,15 @@ function isVideoFile(key: string) {
 function MediaSkeleton({ aspectRatio = "16/9" }: { aspectRatio?: string }) {
   return (
     <div
-      className="relative w-full overflow-hidden rounded-lg bg-white/5"
+      className="relative w-full overflow-hidden rounded-lg bg-fill"
       style={{ aspectRatio }}
     >
       {/* shimmer sweep */}
-      <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.6s_infinite] bg-gradient-to-r from-transparent via-white/8 to-transparent" />
+      <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.6s_infinite] bg-gradient-to-r from-transparent via-hairline to-transparent" />
       {/* subtle inner pattern */}
       <div className="absolute inset-0 flex items-center justify-center">
         <svg
-          className="h-10 w-10 text-white/10"
+          className="h-10 w-10 text-muted"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -65,7 +65,7 @@ function ImagePreview({ src, alt }: { src: string; alt: string }) {
       {status === "loading" && <MediaSkeleton aspectRatio="16/9" />}
 
       {status === "error" && (
-        <div className="flex h-32 w-full items-center justify-center gap-2 rounded-lg border border-red-500/20 bg-red-500/5 text-xs text-red-400">
+        <div className="flex h-32 w-full items-center justify-center gap-2 rounded-lg border border-red-500/20 bg-red-500/5 text-xs text-danger">
           <span>⚠</span>
           <span>Failed to load image</span>
         </div>
@@ -108,21 +108,21 @@ function VideoPreview({ src, filename }: { src: string; filename: string }) {
   const mimeType = mimeMap[ext] ?? "video/mp4";
 
   return (
-    <div className="relative w-full overflow-hidden rounded-lg bg-black/40">
+    <div className="relative w-full overflow-hidden rounded-lg bg-backdrop">
       {status === "loading" && (
         <div className="absolute inset-0 z-10">
           <MediaSkeleton aspectRatio="16/9" />
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full border border-hairline-strong bg-fill backdrop-blur-sm">
               {/* play-like spinner */}
-              <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-indigo-400" />
+              <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-hairline-strong border-t-indigo-400" />
             </div>
           </div>
         </div>
       )}
 
       {status === "error" && (
-        <div className="flex h-40 items-center justify-center gap-2 text-xs text-red-400">
+        <div className="flex h-40 items-center justify-center gap-2 text-xs text-danger">
           <span>⚠</span>
           <span>This video format may not be supported in your browser.</span>
         </div>
@@ -146,7 +146,7 @@ function VideoPreview({ src, filename }: { src: string; filename: string }) {
 
       {/* Duration / format badge shown once ready */}
       {status === "ready" && (
-        <div className="absolute right-2 top-2 rounded-md bg-black/60 px-2 py-0.5 text-[10px] font-mono text-white/60 backdrop-blur-sm">
+        <div className="absolute right-2 top-2 rounded-md bg-backdrop px-2 py-0.5 text-[10px] font-mono text-secondary backdrop-blur-sm">
           {ext.toUpperCase()}
         </div>
       )}
@@ -253,21 +253,21 @@ export function FileDetailModal({
       `}</style>
 
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-backdrop backdrop-blur-sm p-4"
         onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
       >
-        <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border border-white/10 bg-[#111118] p-6">
+        <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border border-hairline-strong bg-surface p-6">
           {/* Header */}
           <div className="mb-4 flex items-start justify-between">
             <div className="flex items-center gap-3 min-w-0">
               <span className="text-3xl shrink-0">{getFileIcon(file.Key)}</span>
-              <p className="truncate font-mono text-sm font-semibold text-[#f1f0ff]">
+              <p className="truncate font-mono text-sm font-semibold text-primary">
                 {filename}
               </p>
             </div>
             <button
               onClick={onClose}
-              className="ml-3 shrink-0 text-gray-400 hover:text-gray-300 transition-colors"
+              className="ml-3 shrink-0 text-muted hover:text-secondary transition-colors"
             >
               ✕
             </button>
@@ -275,12 +275,12 @@ export function FileDetailModal({
 
           {/* ── Media preview area ── */}
           {hasMediaPreview && (
-            <div className="mb-4 overflow-hidden rounded-lg border border-white/8 bg-black/20 p-2">
+            <div className="mb-4 overflow-hidden rounded-lg border border-hairline bg-backdrop p-2">
               {/* While presign URL is loading, show skeleton regardless of type */}
               {loadingPresign && <MediaSkeleton aspectRatio="16/9" />}
 
               {!loadingPresign && presignError && (
-                <div className="flex h-32 items-center justify-center gap-2 text-xs text-red-400">
+                <div className="flex h-32 items-center justify-center gap-2 text-xs text-danger">
                   <span>⚠</span>
                   <span>{presignError}</span>
                 </div>
@@ -297,42 +297,42 @@ export function FileDetailModal({
           )}
 
           {/* File metadata */}
-          <div className="mb-4 space-y-2 border-y border-white/8 py-4 text-xs">
+          <div className="mb-4 space-y-2 border-y border-hairline py-4 text-xs">
             <div className="flex justify-between">
-              <span className="text-[#888899]">Size</span>
-              <span className="font-mono text-[#f1f0ff]">{formatSize(file.Size)}</span>
+              <span className="text-muted">Size</span>
+              <span className="font-mono text-primary">{formatSize(file.Size)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-[#888899]">Last Modified</span>
-              <span className="font-mono text-[#f1f0ff]">{formatDate(file.LastModified)}</span>
+              <span className="text-muted">Last Modified</span>
+              <span className="font-mono text-primary">{formatDate(file.LastModified)}</span>
             </div>
             {file.ETag && (
               <div className="flex justify-between">
-                <span className="text-[#888899]">ETag</span>
-                <span className="truncate font-mono text-[#f1f0ff]">
+                <span className="text-muted">ETag</span>
+                <span className="truncate font-mono text-primary">
                   {file.ETag.slice(0, 16)}…
                 </span>
               </div>
             )}
             <div className="flex flex-col gap-1">
-              <span className="text-[#888899]">Full Path</span>
-              <span className="break-all font-mono text-[#f1f0ff]">{file.Key}</span>
+              <span className="text-muted">Full Path</span>
+              <span className="break-all font-mono text-primary">{file.Key}</span>
             </div>
             <div className="flex flex-col gap-1">
-              <span className="text-[#888899]">Access URL</span>
+              <span className="text-muted">Access URL</span>
               {originUrl ? (
-                <code className="break-all rounded bg-white/5 px-2 py-1 font-mono text-[#f1f0ff]">
+                <code className="break-all rounded bg-fill px-2 py-1 font-mono text-primary">
                   {originUrl}
                 </code>
               ) : (
-                <span className="text-gray-400">N/A</span>
+                <span className="text-muted">N/A</span>
               )}
             </div>
           </div>
 
           {/* Delete confirmation banner */}
           {showDeleteConfirm && (
-            <div className="mb-4 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-300">
+            <div className="mb-4 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-danger">
               Are you sure? This action cannot be undone.
             </div>
           )}
@@ -342,14 +342,14 @@ export function FileDetailModal({
             <button
               onClick={handleCopyUrl}
               disabled={!originUrl}
-              className="flex-1 rounded-lg border border-white/12 px-3 py-2 text-xs font-medium text-[#f1f0ff] transition-all duration-150 hover:border-white/20 hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex-1 rounded-lg border border-hairline-strong px-3 py-2 text-xs font-medium text-primary transition-all duration-150 hover:border-hairline-strong hover:bg-fill disabled:cursor-not-allowed disabled:opacity-50"
             >
               {copied ? "✓ Copied!" : "📋 Copy URL"}
             </button>
             <button
               onClick={handleDownload}
               disabled={!presignedUrl || loadingPresign}
-              className="flex-1 rounded-lg border border-indigo-400/30 px-3 py-2 text-xs font-medium text-indigo-300 transition-all duration-150 hover:border-indigo-400/60 hover:bg-indigo-500/10 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex-1 rounded-lg border border-indigo-400/30 px-3 py-2 text-xs font-medium text-accent transition-all duration-150 hover:border-indigo-400/60 hover:bg-indigo-500/10 disabled:cursor-not-allowed disabled:opacity-50"
             >
               ⬇️ Download
             </button>
@@ -363,7 +363,7 @@ export function FileDetailModal({
             {!showDeleteConfirm ? (
               <button
                 onClick={() => setShowDeleteConfirm(true)}
-                className="flex-1 rounded-lg border border-red-400/30 px-3 py-2 text-xs font-medium text-red-300 transition-all duration-150 hover:border-red-400/60 hover:bg-red-500/10"
+                className="flex-1 rounded-lg border border-red-400/30 px-3 py-2 text-xs font-medium text-danger transition-all duration-150 hover:border-red-400/60 hover:bg-red-500/10"
               >
                 🗑️ Delete
               </button>
@@ -374,7 +374,7 @@ export function FileDetailModal({
                 className="flex-1 inline-flex items-center justify-center gap-1 rounded-lg bg-red-600 px-3 py-2 text-xs font-medium text-white transition-all duration-150 hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {deleting && (
-                  <span className="inline-block h-3 w-3 animate-spin rounded-full border border-white/30 border-t-white" />
+                  <span className="inline-block h-3 w-3 animate-spin rounded-full border border-hairline-strong border-t-white" />
                 )}
                 {deleting ? "Deleting…" : "Confirm Delete"}
               </button>

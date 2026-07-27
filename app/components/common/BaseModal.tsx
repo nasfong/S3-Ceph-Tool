@@ -25,7 +25,7 @@ export function BaseModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-backdrop backdrop-blur-sm p-4"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -33,14 +33,14 @@ export function BaseModal({
       aria-modal="true"
       aria-labelledby="modal-title"
     >
-      <div className={`w-full ${maxWidth} max-h-[90vh] overflow-y-auto rounded-2xl border border-white/10 bg-[#111118] p-6`}>
+      <div className={`w-full ${maxWidth} max-h-[90vh] overflow-y-auto rounded-2xl border border-hairline-strong bg-surface p-6`}>
         <div className="mb-4 flex items-center justify-between">
-          <h2 id="modal-title" className="text-lg font-semibold text-white">
+          <h2 id="modal-title" className="text-lg font-semibold text-primary">
             {title}
           </h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-300 transition-colors shrink-0"
+            className="text-muted hover:text-secondary transition-colors shrink-0"
             aria-label="Close modal"
           >
             ✕

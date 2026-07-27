@@ -100,7 +100,7 @@ export function FileRow({
     return (
       <div
         onClick={handleRowClick}
-        className={`grid grid-cols-12 items-center border-b border-white/4 px-4 py-3 transition-all duration-150 cursor-pointer ${isSelected ? "bg-indigo-500/10" : "hover:bg-white/3"}`}
+        className={`grid grid-cols-12 items-center border-b border-hairline px-4 py-3 transition-all duration-150 cursor-pointer ${isSelected ? "bg-indigo-500/10" : "hover:bg-fill-faint"}`}
       >
         <span className="col-span-1 flex items-center">
           <input
@@ -110,22 +110,22 @@ export function FileRow({
               e.stopPropagation();
               onToggleSelect?.();
             }}
-            className="h-4 w-4 rounded border-white/8 cursor-pointer"
+            className="h-4 w-4 rounded border-hairline cursor-pointer"
           />
         </span>
         <span className="col-span-1 text-base text-amber-400">
           📁
         </span>
         <div className="col-span-5 min-w-0">
-          <p className="truncate font-mono text-sm text-[#f1f0ff]">{filename}</p>
+          <p className="truncate font-mono text-sm text-primary">{filename}</p>
         </div>
-        <p className="col-span-3 truncate font-mono text-xs text-[#888899]">
+        <p className="col-span-3 truncate font-mono text-xs text-muted">
           —
         </p>
         <button
           onClick={handleDeleteFolder}
           disabled={deleting}
-          className="col-span-2 text-right text-red-400 hover:text-red-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-end"
+          className="col-span-2 text-right text-danger hover:text-danger disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-end"
           title="Delete folder"
         >
           {deleting ? "Deleting..." : <TrashIcon />}
@@ -137,7 +137,7 @@ export function FileRow({
   return (
     <div
       onClick={handleRowClick}
-      className={`grid grid-cols-12 items-center border-b border-white/4 px-4 py-3 transition-all duration-150 cursor-pointer ${isSelected ? "bg-indigo-500/10" : "hover:bg-white/3"}`}
+      className={`grid grid-cols-12 items-center border-b border-hairline px-4 py-3 transition-all duration-150 cursor-pointer ${isSelected ? "bg-indigo-500/10" : "hover:bg-fill-faint"}`}
     >
       <span className="col-span-1 flex items-center">
         <input
@@ -147,19 +147,19 @@ export function FileRow({
             e.stopPropagation();
             onToggleSelect?.();
           }}
-          className="h-4 w-4 rounded border-white/8 cursor-pointer"
+          className="h-4 w-4 rounded border-hairline cursor-pointer"
         />
       </span>
       <span className="col-span-1 text-base">
         {getFileIcon(file.Key)}
       </span>
       <div className="col-span-5 min-w-0">
-        <p className="truncate font-mono text-sm text-[#f1f0ff]">{filename}</p>
+        <p className="truncate font-mono text-sm text-primary">{filename}</p>
       </div>
-      <p className="col-span-3 truncate font-mono text-xs text-[#888899]">
+      <p className="col-span-3 truncate font-mono text-xs text-muted">
         {formatDate(file.LastModified)}
       </p>
-      <span className="col-span-2 text-right font-mono text-xs text-[#888899]">
+      <span className="col-span-2 text-right font-mono text-xs text-muted">
         {formatSize(file.Size)}
       </span>
     </div>

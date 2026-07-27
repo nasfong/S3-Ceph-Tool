@@ -114,17 +114,17 @@ export function ShareFileModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-[#1c1c28] border border-white/[0.07] rounded-xl p-6 max-w-md w-full mx-4">
+    <div className="fixed inset-0 bg-backdrop flex items-center justify-center z-50">
+      <div className="bg-surface-3 border border-hairline rounded-xl p-6 max-w-md w-full mx-4">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-lg font-semibold text-white">Share File</h2>
-            <p className="text-sm text-gray-400 mt-1 truncate max-w-xs">{fileName}</p>
+            <h2 className="text-lg font-semibold text-primary">Share File</h2>
+            <p className="text-sm text-muted mt-1 truncate max-w-xs">{fileName}</p>
           </div>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors text-2xl"
+            className="text-muted hover:text-primary transition-colors text-2xl"
           >
             ✕
           </button>
@@ -132,7 +132,7 @@ export function ShareFileModal({
 
         {/* Expiration Selector */}
         <div className="mb-4">
-          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-widest mb-2">
+          <label className="block text-xs font-semibold text-muted uppercase tracking-widest mb-2">
             Link Expires In
           </label>
           <select
@@ -143,7 +143,7 @@ export function ShareFileModal({
               setExpiresAt(null);
             }}
             disabled={loading}
-            className="w-full px-3 py-2 bg-[#111118] border border-white/[0.07] rounded-lg text-white text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:border-indigo-500/50 transition-colors focus:outline-none focus:border-indigo-500"
+            className="w-full px-3 py-2 bg-surface border border-hairline rounded-lg text-primary text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:border-indigo-500/50 transition-colors focus:outline-none focus:border-indigo-500"
           >
             {EXPIRATION_OPTIONS.map((option) => (
               <option key={option.value} value={option.value}>
@@ -161,7 +161,7 @@ export function ShareFileModal({
         >
           {loading ? (
             <>
-              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-hairline-strong border-t-white rounded-full animate-spin" />
               Generating...
             </>
           ) : shareUrl ? (
@@ -173,7 +173,7 @@ export function ShareFileModal({
 
         {/* Error */}
         {error && (
-          <div className="p-3 mb-4 border-l-4 border-red-500 bg-red-500/10 rounded text-red-400 text-sm">
+          <div className="p-3 mb-4 border-l-4 border-red-500 bg-red-500/10 rounded text-danger text-sm">
             {error}
           </div>
         )}
@@ -181,34 +181,34 @@ export function ShareFileModal({
         {/* Share URL Display */}
         {shareUrl && expiresAt && (
           <div className="space-y-3">
-            <div className="p-3 bg-[#111118] border border-white/[0.07] rounded-lg">
-              <p className="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-2">
+            <div className="p-3 bg-surface border border-hairline rounded-lg">
+              <p className="text-xs text-muted uppercase tracking-widest font-semibold mb-2">
                 Share Link
               </p>
-              <p className="text-xs text-gray-400 break-all font-mono">{shareUrl}</p>
+              <p className="text-xs text-muted break-all font-mono">{shareUrl}</p>
             </div>
 
-            <p className="text-xs text-gray-400">
-              Valid until <span className="text-indigo-400 font-mono">{expiresAt.toLocaleString()}</span>
+            <p className="text-xs text-muted">
+              Valid until <span className="text-accent font-mono">{expiresAt.toLocaleString()}</span>
             </p>
 
             <div className="flex gap-2">
               <button
                 onClick={copyToClipboard}
-                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-[#111118] border border-white/[0.07] text-white text-sm rounded-lg hover:border-indigo-500/50 transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-surface border border-hairline text-primary text-sm rounded-lg hover:border-indigo-500/50 transition-colors"
               >
                 {copied ? "✓ Copied" : "📋 Copy"}
               </button>
               <button
                 onClick={copyAsMarkdown}
-                className="flex-1 px-3 py-2 bg-[#111118] border border-white/[0.07] text-white text-sm rounded-lg hover:border-indigo-500/50 transition-colors"
+                className="flex-1 px-3 py-2 bg-surface border border-hairline text-primary text-sm rounded-lg hover:border-indigo-500/50 transition-colors"
                 title="Copy as Markdown link"
               >
                 Copy Markdown
               </button>
             </div>
 
-            <p className="text-xs text-gray-500 bg-amber-500/10 border border-amber-500/20 p-2 rounded">
+            <p className="text-xs text-muted bg-amber-500/10 border border-amber-500/20 p-2 rounded">
               ℹ️ This link will automatically expire after the selected time. Anyone with this link can access the file until then.
             </p>
           </div>
@@ -217,7 +217,7 @@ export function ShareFileModal({
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="w-full mt-4 px-4 py-2 border border-white/[0.07] text-gray-300 font-medium rounded-lg hover:border-indigo-500/50 transition-colors"
+          className="w-full mt-4 px-4 py-2 border border-hairline text-secondary font-medium rounded-lg hover:border-indigo-500/50 transition-colors"
         >
           Close
         </button>

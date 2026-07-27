@@ -40,7 +40,7 @@ export function FileTable({
   }
 
   return (
-    <div className="overflow-hidden rounded-b-xl border border-t-0 border-white/8 bg-[#111118]">
+    <div className="overflow-hidden rounded-b-xl border border-t-0 border-hairline bg-surface">
       <FileTableHeader
         selectedCount={selectedKeys.size}
         totalCount={files.length}

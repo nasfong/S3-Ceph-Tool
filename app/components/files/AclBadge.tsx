@@ -3,7 +3,7 @@ import { GlobeIcon, LockIcon } from "../icons/BucketPageIcons";
 export function AclBadge({ isPublic }: { isPublic: boolean }) {
   return (
     <div className="flex items-center gap-2">
-      <span className="text-[10px] uppercase tracking-widest text-white/30 font-mono">
+      <span className="text-[10px] uppercase tracking-widest text-muted font-mono">
         ACL
       </span>
       <span

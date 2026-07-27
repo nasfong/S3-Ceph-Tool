@@ -26,7 +26,7 @@ export function BucketAclBadge({ isPublic }: BucketAclBadgeProps) {
   return (
     <span
       title="Your credential cannot read this bucket's policy, so its visibility is unknown."
-      className="rounded-full bg-white/6 px-2.5 py-0.5 text-[11px] text-white/40"
+      className="rounded-full bg-fill px-2.5 py-0.5 text-[11px] text-muted"
     >
       — Unknown
     </span>

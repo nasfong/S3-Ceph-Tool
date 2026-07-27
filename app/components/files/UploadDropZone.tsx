@@ -35,28 +35,28 @@ export function UploadDropZone({
         className={`relative flex min-h-45 flex-col items-center justify-center rounded-xl border-2 border-dashed transition-all duration-200 select-none overflow-hidden ${
           dragging
             ? "border-indigo-500/70 bg-indigo-500/7"
-            : "border-white/8 bg-white/2 hover:border-white/14 hover:bg-white/3"
+            : "border-hairline bg-fill-faint hover:border-hairline-strong hover:bg-fill-faint"
         }`}
       >
         {/* bg glow when dragging */}
         {dragging && <div className="absolute inset-0 bg-indigo-500/5 backdrop-blur-sm" />}
 
         <div className={`relative flex flex-col items-center gap-3 transition-transform duration-200 ${dragging ? "scale-105" : ""}`}>
-          <div className={`transition-colors duration-200 ${dragging ? "text-indigo-400" : "text-white/20"}`}>
+          <div className={`transition-colors duration-200 ${dragging ? "text-accent" : "text-muted"}`}>
             <CloudUploadIcon />
           </div>
           <div className="text-center">
-            <p className="text-sm font-medium text-white/60">
+            <p className="text-sm font-medium text-secondary">
               {dragging ? "Release to add files" : "Drag files or folders here"}
             </p>
-            <p className="mt-1 text-xs text-white/25">Any file type · No size limit</p>
+            <p className="mt-1 text-xs text-muted">Any file type · No size limit</p>
           </div>
 
           {!dragging && (
             <div className="mt-1 flex gap-2">
               <button
                 onClick={onFilesClick}
-                className="flex items-center gap-1.5 rounded-lg border border-indigo-400/20 bg-indigo-500/10 px-3 py-1.5 text-xs font-medium text-indigo-300 transition-all duration-150 hover:border-indigo-400/40 hover:bg-indigo-500/15"
+                className="flex items-center gap-1.5 rounded-lg border border-indigo-400/20 bg-indigo-500/10 px-3 py-1.5 text-xs font-medium text-accent transition-all duration-150 hover:border-indigo-400/40 hover:bg-indigo-500/15"
               >
                 <FilesIcon />
                 Files

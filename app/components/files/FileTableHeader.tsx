@@ -15,7 +15,7 @@ export function FileTableHeader({
   const isSomeSelected = selectedCount > 0 && selectedCount < totalCount;
 
   return (
-    <div className="grid grid-cols-12 border-b border-white/8 px-4 py-2 text-[11px] uppercase tracking-[0.08em] text-[#888899]">
+    <div className="grid grid-cols-12 border-b border-hairline px-4 py-2 text-[11px] uppercase tracking-[0.08em] text-muted">
       <span className="col-span-1 flex items-center">
         <FileTableCheckbox
           checked={isAllSelected}

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { S3Bucket, S3Credentials } from "@/lib/types";
 import { getHeaders } from "@/lib/session";
+import { ENV } from "@/lib/env";
 import { useAuth } from "@/context/AuthProvider";
 import { Breadcrumbs } from "../components/layout/Breadcrumbs";
 import { BucketGrid } from "../components/buckets/BucketGrid";
@@ -119,7 +120,7 @@ export default function BucketsPage() {
   return (
     <>
       {error && (
-        <div className="mb-5 rounded-lg border-l-[3px] border-[#ef4444] bg-red-500/10 px-4 py-3 text-sm text-red-300">
+        <div className="mb-5 rounded-lg border-l-[3px] border-[#ef4444] bg-red-500/10 px-4 py-3 text-sm text-danger">
           {error}
         </div>
       )}
@@ -131,17 +132,19 @@ export default function BucketsPage() {
 
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <p className="text-[11px] uppercase tracking-[0.08em] text-[#888899]">Storage</p>
-          <h1 className="text-3xl font-semibold text-[#f1f0ff]">Buckets</h1>
+          <p className="text-[11px] uppercase tracking-[0.08em] text-muted">Storage</p>
+          <h1 className="text-3xl font-semibold text-primary">Buckets</h1>
         </div>
-        <div className="flex gap-2">
-          <button
-            onClick={() => setShowCreateModal(true)}
-            className="rounded-lg border border-indigo-400/30 bg-indigo-500/10 px-4 py-2 text-sm font-medium text-indigo-300 transition-all duration-150 hover:border-indigo-400/60 hover:bg-indigo-500/20"
-          >
-            ➕ New Bucket
-          </button>
-        </div>
+        {ENV.ENABLE_CREATE_BUCKET && (
+          <div className="flex gap-2">
+            <button
+              onClick={() => setShowCreateModal(true)}
+              className="rounded-lg border border-indigo-400/30 bg-indigo-500/10 px-4 py-2 text-sm font-medium text-accent transition-all duration-150 hover:border-indigo-400/60 hover:bg-indigo-500/20"
+            >
+              ➕ New Bucket
+            </button>
+          </div>
+        )}
       </div>
 
       {loading ? (
@@ -149,38 +152,46 @@ export default function BucketsPage() {
           {Array.from({ length: 6 }).map((_, index) => (
             <div
               key={`bucket-skeleton-${index}`}
-              className="animate-pulse rounded-xl border border-white/8 bg-[#111118] p-5"
+              className="animate-pulse rounded-xl border border-hairline bg-surface p-5"
             >
-              <div className="mb-4 h-4 w-2/3 rounded bg-white/10" />
-              <div className="mb-6 h-3 w-1/2 rounded bg-white/5" />
-              <div className="h-px bg-white/8" />
+              <div className="mb-4 h-4 w-2/3 rounded bg-fill-strong" />
+              <div className="mb-6 h-3 w-1/2 rounded bg-fill" />
+              <div className="h-px bg-fill-strong" />
               <div className="mt-3 flex items-center justify-between">
-                <div className="h-5 w-16 rounded-full bg-white/10" />
-                <div className="h-7 w-24 rounded-lg bg-white/10" />
+                <div className="h-5 w-16 rounded-full bg-fill-strong" />
+                <div className="h-7 w-24 rounded-lg bg-fill-strong" />
               </div>
             </div>
           ))}
         </div>
       ) : buckets.length === 0 ? (
-        <div className="rounded-xl border border-white/8 bg-[#111118] px-6 py-12 text-center">
-          <p className="text-sm text-[#888899]">No buckets yet. Create one to get started.</p>
+        <div className="rounded-xl border border-hairline bg-surface px-6 py-12 text-center">
+          <p className="text-sm text-muted">
+            {ENV.ENABLE_CREATE_BUCKET
+              ? "No buckets yet. Create one to get started."
+              : "No buckets available."}
+          </p>
         </div>
       ) : (
         <BucketGrid
           buckets={buckets}
           updatingAcl={updatingAcl}
           onSelect={handleSelectBucket}
-          onAclToggle={handleBucketAclToggle}
-          onDelete={setDeletingBucket}
+          onAclToggle={
+            ENV.ENABLE_BUCKET_ACL_TOGGLE ? handleBucketAclToggle : undefined
+          }
+          onDelete={ENV.ENABLE_DELETE_BUCKET ? setDeletingBucket : undefined}
         />
       )}
 
-      <CreateBucketModal
-        open={showCreateModal}
-        onClose={() => setShowCreateModal(false)}
-        onCreated={handleBucketCreated}
-        credentials={credentials}
-      />
+      {ENV.ENABLE_CREATE_BUCKET && (
+        <CreateBucketModal
+          open={showCreateModal}
+          onClose={() => setShowCreateModal(false)}
+          onCreated={handleBucketCreated}
+          credentials={credentials}
+        />
+      )}
 
       {deletingBucket && (
         <DeleteBucketModal
