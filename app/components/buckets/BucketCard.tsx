@@ -8,7 +8,7 @@ type BucketCardProps = {
   isSelected?: boolean;
   updatingAcl: boolean;
   onClick: () => void;
-  onAclToggle: () => void;
+  onAclToggle?: () => void;
   onDelete?: () => void;
 };
 
@@ -55,7 +55,7 @@ function AclToggle({ isPublic, loading, onToggle }: AclToggleProps) {
     >
       {/* label left */}
       <span
-        className={`text-[11px] font-medium font-mono tracking-wide transition-colors duration-200 ${isPublic ? "text-white/30" : "text-amber-400/90"
+        className={`text-[11px] font-medium font-mono tracking-wide transition-colors duration-200 ${isPublic ? "text-muted" : "text-warning"
           }`}
       >
         <LockIcon />
@@ -65,13 +65,13 @@ function AclToggle({ isPublic, loading, onToggle }: AclToggleProps) {
       <div
         className={`relative flex h-5 w-9 items-center rounded-full border transition-all duration-300 ${isPublic
             ? "border-emerald-500/40 bg-emerald-500/20"
-            : "border-white/10 bg-white/6"
+            : "border-hairline-strong bg-fill"
           }`}
       >
         {/* loading shimmer overlay */}
         {loading && (
           <span className="absolute inset-0 rounded-full overflow-hidden">
-            <span className="absolute inset-0 -translate-x-full animate-[shimmer_1s_infinite] bg-linear-to-r from-transparent via-white/20 to-transparent" />
+            <span className="absolute inset-0 -translate-x-full animate-[shimmer_1s_infinite] bg-linear-to-r from-transparent via-fill-strong to-transparent" />
           </span>
         )}
 
@@ -79,27 +79,27 @@ function AclToggle({ isPublic, loading, onToggle }: AclToggleProps) {
         <span
           className={`absolute flex h-3.5 w-3.5 items-center justify-center rounded-full shadow-md transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isPublic
               ? "left-4.5 bg-emerald-400 shadow-emerald-500/40"
-              : "left-0.75 bg-white/40"
+              : "left-0.75 bg-fill-strong"
             }`}
         >
           {/* icon inside thumb */}
           {!loading && (
             <span
-              className={`transition-all duration-200 ${isPublic ? "text-emerald-900" : "text-white/60"
+              className={`transition-all duration-200 ${isPublic ? "text-emerald-900" : "text-secondary"
                 }`}
             >
               {isPublic ? <GlobeIcon /> : <LockIcon />}
             </span>
           )}
           {loading && (
-            <span className="h-1.5 w-1.5 rounded-full bg-white/60 animate-pulse" />
+            <span className="h-1.5 w-1.5 rounded-full bg-fill-strong animate-pulse" />
           )}
         </span>
       </div>
 
       {/* label right */}
       <span
-        className={`text-[11px] font-medium font-mono tracking-wide transition-colors duration-200 ${isPublic ? "text-emerald-400" : "text-white/30"
+        className={`text-[11px] font-medium font-mono tracking-wide transition-colors duration-200 ${isPublic ? "text-success" : "text-muted"
           }`}
       >
         <GlobeIcon />
@@ -129,20 +129,20 @@ export function BucketCard({
     <div
       onClick={onClick}
       className={`group relative cursor-pointer rounded-xl border transition-all duration-200 overflow-hidden ${isSelected
-          ? "border-indigo-500/60 bg-indigo-500/6 shadow-[0_0_0_1px_rgba(99,102,241,0.15),0_4px_24px_rgba(99,102,241,0.1)]"
-          : "border-white/[0.07] bg-[#111118] hover:border-indigo-500/30 hover:bg-[#131320] hover:shadow-[0_4px_24px_rgba(0,0,0,0.3)] hover:-translate-y-0.5"
+          ? "border-brand-500/60 bg-brand-500/6 shadow-[0_0_0_1px_rgba(28,117,188,0.15),0_4px_24px_rgba(28,117,188,0.1)]"
+          : "border-hairline bg-surface hover:border-brand-500/30 hover:bg-surface-2 hover:shadow-[0_4px_24px_rgba(0,0,0,0.3)] hover:-translate-y-0.5"
         }`}
     >
       {/* selected left bar */}
       {isSelected && (
-        <span className="absolute left-0 top-3 bottom-3 w-0.75 rounded-r-full bg-indigo-500" />
+        <span className="absolute left-0 top-3 bottom-3 w-0.75 rounded-r-full bg-brand-500" />
       )}
 
       {/* top shimmer line */}
       <div
         className={`absolute inset-x-0 top-0 h-px transition-opacity duration-200 ${isSelected
-            ? "opacity-100 bg-linear-to-r from-transparent via-indigo-400/60 to-transparent"
-            : "opacity-0 group-hover:opacity-100 bg-linear-to-r from-transparent via-indigo-400/30 to-transparent"
+            ? "opacity-100 bg-linear-to-r from-transparent via-brand-400/60 to-transparent"
+            : "opacity-0 group-hover:opacity-100 bg-linear-to-r from-transparent via-brand-400/30 to-transparent"
           }`}
       />
 
@@ -152,18 +152,18 @@ export function BucketCard({
           <div className="flex items-center gap-3">
             <div
               className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border transition-colors duration-200 ${isSelected
-                  ? "border-indigo-400/30 bg-indigo-500/20 text-indigo-300"
-                  : "border-white/8 bg-white/4 text-indigo-400 group-hover:border-indigo-400/20 group-hover:bg-indigo-500/10"
+                  ? "border-brand-400/30 bg-brand-500/20 text-accent"
+                  : "border-hairline bg-fill text-accent group-hover:border-brand-400/20 group-hover:bg-brand-500/10"
                 }`}
             >
               📦
             </div>
 
             <div className="min-w-0">
-              <p className="font-mono text-[13px] font-semibold text-white truncate max-w-40">
+              <p className="font-mono text-[13px] font-semibold text-primary truncate max-w-40">
                 {bucket.Name}
               </p>
-              <p className="mt-0.5 font-mono text-[10px] text-white/30 uppercase tracking-wider">
+              <p className="mt-0.5 font-mono text-[10px] text-muted uppercase tracking-wider">
                 {formattedDate}
               </p>
             </div>
@@ -173,13 +173,13 @@ export function BucketCard({
         </div>
 
         {/* Divider */}
-        <div className="border-t border-white/6 mb-3" />
+        <div className="border-t border-hairline mb-3" />
 
         {/* Actions row */}
         <div className="flex items-center justify-between">
           {/* ACL toggle — hidden when we cannot read the policy, since toggling
               would only fail and the current state is unknown anyway. */}
-          {visibilityKnown ? (
+          {visibilityKnown && onAclToggle ? (
             <div className="flex items-center gap-2">
               <AclToggle
                 isPublic={bucket.isPublic === true}
@@ -189,7 +189,7 @@ export function BucketCard({
                   onAclToggle();
                 }}
               />
-              <span className="text-[11px] text-white/30 font-mono">
+              <span className="text-[11px] text-muted font-mono">
                 {updatingAcl
                   ? "updating…"
                   : bucket.isPublic
@@ -197,8 +197,16 @@ export function BucketCard({
                     : "private"}
               </span>
             </div>
+          ) : visibilityKnown ? (
+            // Toggling disabled — show the current visibility read-only.
+            <div className="flex items-center gap-2 text-muted">
+              {bucket.isPublic ? <GlobeIcon /> : <LockIcon />}
+              <span className="text-[11px] font-mono">
+                {bucket.isPublic ? "public access" : "private"}
+              </span>
+            </div>
           ) : (
-            <div className="flex items-center gap-2 text-white/25">
+            <div className="flex items-center gap-2 text-muted">
               <LockIcon />
               <span className="text-[11px] font-mono">
                 visibility not available
@@ -214,7 +222,7 @@ export function BucketCard({
                 onDelete();
               }}
               aria-label="Delete bucket"
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/8 bg-white/3 text-white/30 transition-all duration-150 hover:border-red-400/40 hover:bg-red-500/10 hover:text-red-400"
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-hairline bg-fill-faint text-muted transition-all duration-150 hover:border-red-400/40 hover:bg-red-500/10 hover:text-danger"
             >
               <TrashIcon />
             </button>

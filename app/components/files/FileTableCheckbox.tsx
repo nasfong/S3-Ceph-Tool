@@ -18,7 +18,7 @@ export function FileTableCheckbox({
       disabled={disabled}
       onChange={onChange}
       title={title}
-      className="h-4 w-4 rounded border-white/8 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+      className="h-4 w-4 rounded border-hairline cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
     />
   );
 }

@@ -23,7 +23,7 @@ export default function BucketsLayout({
   if (!credentials) return null;
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#0a0a0f]">
+    <div className="flex flex-col min-h-screen bg-app">
       <Navbar credentials={credentials} onLogout={logout} />
       <main className="flex-1 w-full px-6 py-8 sm:px-8 lg:px-12 mt-20">
         <div className="mx-auto max-w-7xl">

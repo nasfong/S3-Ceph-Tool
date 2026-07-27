@@ -18,6 +18,13 @@ const buildTimeEnv: Record<string, string> = {
   NEXT_PUBLIC_S3_ENDPOINT:
     process.env.NEXT_PUBLIC_S3_ENDPOINT ?? "https://fsgw.sabay.test",
   NEXT_PUBLIC_CERTIFICATE: process.env.NEXT_PUBLIC_CERTIFICATE ?? "false",
+  // Feature flags — disabled by default, set to "true" to enable.
+  NEXT_PUBLIC_ENABLE_CREATE_BUCKET:
+    process.env.NEXT_PUBLIC_ENABLE_CREATE_BUCKET ?? "false",
+  NEXT_PUBLIC_ENABLE_BUCKET_ACL_TOGGLE:
+    process.env.NEXT_PUBLIC_ENABLE_BUCKET_ACL_TOGGLE ?? "false",
+  NEXT_PUBLIC_ENABLE_DELETE_BUCKET:
+    process.env.NEXT_PUBLIC_ENABLE_DELETE_BUCKET ?? "false",
 };
 
 function getEnv(key: string): string {
@@ -36,4 +43,8 @@ export const ENV = {
   GATEWAY_URL: getEnv("NEXT_PUBLIC_GATEWAY_URL"),
   S3_ENDPOINT: getEnv("NEXT_PUBLIC_S3_ENDPOINT"),
   CERTIFICATE: getEnv("NEXT_PUBLIC_CERTIFICATE") === "true",
+  ENABLE_CREATE_BUCKET: getEnv("NEXT_PUBLIC_ENABLE_CREATE_BUCKET") === "true",
+  ENABLE_BUCKET_ACL_TOGGLE:
+    getEnv("NEXT_PUBLIC_ENABLE_BUCKET_ACL_TOGGLE") === "true",
+  ENABLE_DELETE_BUCKET: getEnv("NEXT_PUBLIC_ENABLE_DELETE_BUCKET") === "true",
 };

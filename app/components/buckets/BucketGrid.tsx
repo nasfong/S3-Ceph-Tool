@@ -8,7 +8,7 @@ type BucketGridProps = {
   selectedBucket?: string | null;
   updatingAcl: string | null;
   onSelect: (name: string) => void;
-  onAclToggle: (name: string) => void;
+  onAclToggle?: (name: string) => void;
   onDelete?: (bucket: S3Bucket) => void;
 };
 
@@ -33,8 +33,10 @@ export function BucketGrid({
             isSelected={selectedBucket === bucket.Name}
             updatingAcl={updatingAcl === bucket.Name}
             onClick={() => onSelect(bucket.Name)}
-            onAclToggle={() => onAclToggle(bucket.Name)}
-            onDelete={() => onDelete?.(bucket)}
+            onAclToggle={
+              onAclToggle ? () => onAclToggle(bucket.Name) : undefined
+            }
+            onDelete={onDelete ? () => onDelete(bucket) : undefined}
           />
         </div>
       ))}

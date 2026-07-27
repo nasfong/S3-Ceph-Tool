@@ -134,7 +134,7 @@ export function Breadcrumbs({
               {/* Separator */}
               {index > 0 && !isEllipsis && (
                 <span
-                  className="shrink-0 text-gray-600 dark:text-gray-500"
+                  className="shrink-0 text-muted"
                   aria-hidden="true"
                 >
                   /
@@ -145,7 +145,7 @@ export function Breadcrumbs({
               {isLast ? (
                 // Current page - not clickable
                 <span
-                  className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[#f1f0ff] dark:text-white"
+                  className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-primary"
                   aria-current="page"
                 >
                   {icon && <span aria-hidden="true">{icon}</span>}
@@ -156,7 +156,7 @@ export function Breadcrumbs({
               ) : isEllipsis ? (
                 // Ellipsis - not interactive
                 <span
-                  className="shrink-0 px-1 text-gray-500 dark:text-gray-600"
+                  className="shrink-0 px-1 text-muted"
                   aria-hidden="true"
                 >
                   …
@@ -167,7 +167,7 @@ export function Breadcrumbs({
                   onClick={() => handleNavigate(item.href)}
                   onContextMenu={(e) => handleContextMenu(e, item)}
                   onKeyDown={(e) => handleKeyDown(e, item)}
-                  className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-gray-400 transition-all duration-150 hover:bg-white/5 hover:text-indigo-400 focus:bg-white/10 focus:text-indigo-400 focus:outline-none dark:text-gray-500 dark:hover:bg-white/10 dark:hover:text-indigo-300"
+                  className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-muted transition-all duration-150 hover:bg-fill hover:text-accent focus:bg-fill-strong focus:text-accent focus:outline-none"
                   aria-label={`Navigate to ${item.label}`}
                   title={`Go to ${item.label}`}
                 >
@@ -184,7 +184,7 @@ export function Breadcrumbs({
 
       {/* Optional: Show full path on hover */}
       {breadcrumbItems.length > displayItems.length && (
-        <div className="ml-1 text-xs text-gray-600 dark:text-gray-500" title="Path is truncated">
+        <div className="ml-1 text-xs text-muted" title="Path is truncated">
           …
         </div>
       )}

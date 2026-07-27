@@ -1,26 +1,126 @@
 @import "tailwindcss";
 
+/* ------------------------------------------------------------------ *
+ * Theme tokens
+ * Dark is the default (:root). Light overrides via [data-theme="light"].
+ * The theme is resolved before hydration by an inline script in layout,
+ * which sets data-theme on <html> from localStorage or system preference.
+ * ------------------------------------------------------------------ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
+
+  /* surfaces */
+  --app-bg: #727272;
+  --surface: #111118;
+  --surface-2: #0e0e1a;
+  --surface-3: #1c1c28;
+
+  /* text */
+  --text-primary: #f1f0ff;
+  --text-secondary: #a5a4c0;
+  --text-muted: #888899;
+
+  /* translucent borders / fills */
+  --hairline: rgba(255, 255, 255, 0.08);
+  --hairline-strong: rgba(255, 255, 255, 0.16);
+  --fill-faint: rgba(255, 255, 255, 0.03);
+  --fill: rgba(255, 255, 255, 0.05);
+  --fill-strong: rgba(255, 255, 255, 0.1);
+
+  /* overlays */
+  --backdrop: rgba(0, 0, 0, 0.6);
+  --navbar: rgba(10, 10, 18, 0.5);
+  --navbar-scrolled: rgba(8, 8, 14, 0.92);
+
+  /* accents (foreground shades tuned for contrast per theme) */
+  --accent: #7bb8e5; /* brand-300 — light blue reads well on dark */
+  --danger: #f87171; /* red-400 */
+  --warning: #fbbf24; /* amber-400 — reads well on dark */
+  --success: #34d399; /* emerald-400 — reads well on dark */
+
+  /* legacy tokens kept for compatibility */
+  --background: var(--app-bg);
+  --foreground: var(--text-primary);
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  --app-bg: #f4f5fa;
+  --surface: #ffffff;
+  --surface-2: #ffffff;
+  --surface-3: #eceef4;
+
+  --text-primary: #16161d;
+  --text-secondary: #45455a;
+  --text-muted: #5b5b6b;
+
+  --hairline: rgba(17, 17, 32, 0.1);
+  --hairline-strong: rgba(17, 17, 32, 0.18);
+  --fill-faint: rgba(17, 17, 32, 0.02);
+  --fill: rgba(17, 17, 32, 0.04);
+  --fill-strong: rgba(17, 17, 32, 0.07);
+
+  --backdrop: rgba(18, 18, 33, 0.35);
+  --navbar: rgba(255, 255, 255, 0.72);
+  --navbar-scrolled: rgba(255, 255, 255, 0.9);
+
+  --accent: #1c75bc; /* brand-500 — primary blue, AA on white (4.86:1) */
+  --danger: #dc2626; /* red-600 */
+  --warning: #b45309; /* amber-700 — AA on light (5.0:1) */
+  --success: #047857; /* emerald-700 — AA on light (5.5:1) */
+}
+
+/* ------------------------------------------------------------------ *
+ * Brand palette — the app's primary color (#1C75BC) as a fixed hue
+ * ramp. Values do not flip between themes; opacity modifiers adapt to
+ * whatever surface they sit on via color-mix. The per-theme readable
+ * foreground shade lives in --accent above.
+ * ------------------------------------------------------------------ */
+@theme {
+  --color-brand-200: #aed3f0;
+  --color-brand-300: #7bb8e5;
+  --color-brand-400: #3d93d6;
+  --color-brand-500: #1c75bc;
+  --color-brand-600: #1863a1;
+  --color-brand-700: #155286;
 }
 
 @theme inline {
+  --color-app: var(--app-bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-muted: var(--text-muted);
+
+  --color-hairline: var(--hairline);
+  --color-hairline-strong: var(--hairline-strong);
+  --color-fill-faint: var(--fill-faint);
+  --color-fill: var(--fill);
+  --color-fill-strong: var(--fill-strong);
+
+  --color-backdrop: var(--backdrop);
+  --color-navbar: var(--navbar);
+  --color-navbar-scrolled: var(--navbar-scrolled);
+
+  --color-accent: var(--accent);
+  --color-danger: var(--danger);
+  --color-warning: var(--warning);
+  --color-success: var(--success);
+
+  /* legacy */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--app-bg);
+  color: var(--text-primary);
   font-family: Arial, Helvetica, sans-serif;
 }
