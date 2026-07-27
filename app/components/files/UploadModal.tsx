@@ -7,6 +7,7 @@ import { XIcon } from "../icons/UploadModalIcons";
 import { UploadDropZone } from "./UploadDropZone";
 import { UploadQueue } from "./UploadQueue";
 import { UploadFooter } from "./UploadFooter";
+import { ErrorAlert } from "../common/ErrorAlert";
 
 type UploadModalProps = {
   open: boolean;
@@ -29,7 +30,7 @@ export function UploadModal({
   const folderInputRef = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
 
-  const { items, addFiles, startUpload, cancel, remove, clearAll, allDone, totalBytes, doneCount } = useUpload(
+  const { items, addFiles, startUpload, cancel, remove, clearAll, allDone, errorMessage, totalBytes, doneCount } = useUpload(
     bucket,
     prefix,
     credentials
@@ -86,6 +87,12 @@ export function UploadModal({
 
         {/* ── Body ── */}
         <div className="px-6 py-5">
+          {errorMessage && (
+            <div className="mb-4">
+              <ErrorAlert error={errorMessage} />
+            </div>
+          )}
+
           {items.length === 0 ? (
             <UploadDropZone
               dragging={dragging}

@@ -101,6 +101,18 @@ export async function POST(req: NextRequest) {
       const errorObj = err as unknown as { message?: string; Code?: string };
       message = errorObj.message || errorObj.Code || JSON.stringify(err);
     }
+
+    // A read-only credential fails here with a bare "Access Denied". Say what
+    // actually went wrong, so the user knows it isn't a broken upload.
+    const httpStatus = (err as { $metadata?: { httpStatusCode?: number } }).$metadata
+      ?.httpStatusCode;
+    if (httpStatus === 403 || /access denied/i.test(message)) {
+      return NextResponse.json(
+        { error: "You do not have permission to upload to this bucket." },
+        { status: 403 },
+      );
+    }
+
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

@@ -94,10 +94,24 @@ export async function DELETE(
       }
     }
     
+    // A credential without delete rights fails with a bare "Access Denied", which
+    // reads like a broken request. Say what actually happened — and flag it, so
+    // the UI can drop the pointless "Try again".
+    const httpStatus = (err as { $metadata?: { httpStatusCode?: number } }).$metadata
+      ?.httpStatusCode;
+    const errorName = (err as { name?: string }).name;
+    const isDenied =
+      !isBucketNotEmpty && (httpStatus === 403 || errorName === "AccessDenied");
+
+    if (isDenied) {
+      message = `You do not have permission to delete "${bucketName}".`;
+      statusCode = 403;
+    }
+
     console.error(`[DELETE /api/s3/buckets/${bucketName}] ${isBucketNotEmpty ? "BucketNotEmpty" : "Error"}:`, message);
-    
+
     return NextResponse.json(
-      { error: message, bucketNotEmpty: isBucketNotEmpty },
+      { error: message, bucketNotEmpty: isBucketNotEmpty, denied: isDenied },
       { status: statusCode }
     );
   }

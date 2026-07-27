@@ -116,6 +116,8 @@ export function BucketCard({
   onAclToggle,
   onDelete,
 }: BucketCardProps) {
+  // null/undefined means the policy could not be read with this credential
+  const visibilityKnown = typeof bucket.isPublic === "boolean";
   const createdAt = new Date(bucket.CreationDate);
   const formattedDate = createdAt.toLocaleDateString("en-US", {
     year: "numeric",
@@ -167,7 +169,7 @@ export function BucketCard({
             </div>
           </div>
 
-          <BucketAclBadge isPublic={bucket.isPublic || false} />
+          <BucketAclBadge isPublic={bucket.isPublic} />
         </div>
 
         {/* Divider */}
@@ -175,24 +177,34 @@ export function BucketCard({
 
         {/* Actions row */}
         <div className="flex items-center justify-between">
-          {/* ACL toggle switch */}
-          <div className="flex items-center gap-2">
-            <AclToggle
-              isPublic={bucket.isPublic || false}
-              loading={updatingAcl}
-              onToggle={(e) => {
-                e.stopPropagation();
-                onAclToggle();
-              }}
-            />
-            <span className="text-[11px] text-white/30 font-mono">
-              {updatingAcl
-                ? "updating…"
-                : bucket.isPublic
-                  ? "public access"
-                  : "private"}
-            </span>
-          </div>
+          {/* ACL toggle — hidden when we cannot read the policy, since toggling
+              would only fail and the current state is unknown anyway. */}
+          {visibilityKnown ? (
+            <div className="flex items-center gap-2">
+              <AclToggle
+                isPublic={bucket.isPublic === true}
+                loading={updatingAcl}
+                onToggle={(e) => {
+                  e.stopPropagation();
+                  onAclToggle();
+                }}
+              />
+              <span className="text-[11px] text-white/30 font-mono">
+                {updatingAcl
+                  ? "updating…"
+                  : bucket.isPublic
+                    ? "public access"
+                    : "private"}
+              </span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 text-white/25">
+              <LockIcon />
+              <span className="text-[11px] font-mono">
+                visibility not available
+              </span>
+            </div>
+          )}
 
           {/* Delete */}
           {onDelete && (

@@ -165,6 +165,10 @@ export function useUpload(
     ["done", "error", "cancelled"].includes(i.status),
   );
   const hasErrors = items.some((i) => i.status === "error");
+  // First failure message, so the modal can show what actually went wrong
+  // (e.g. a read-only credential) instead of just marking rows failed.
+  const errorMessage =
+    items.find((i) => i.status === "error" && i.error)?.error ?? null;
   const totalBytes = items.reduce((sum, i) => sum + i.file.size, 0);
   const doneCount = items.filter((i) => i.status === "done").length;
 
@@ -178,6 +182,7 @@ export function useUpload(
     clearAll,
     allDone,
     hasErrors,
+    errorMessage,
     totalBytes,
     doneCount,
   };

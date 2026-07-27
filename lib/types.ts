@@ -10,7 +10,8 @@ export type S3Credentials = {
 export type S3Bucket = {
   Name: string;
   CreationDate: string;
-  isPublic?: boolean;
+  /** null when this credential may not read the bucket policy. */
+  isPublic?: boolean | null;
 };
 
 export type S3Object = {

@@ -59,6 +59,7 @@ export default function BucketsPage() {
       );
       setBuckets(bucketsWithAcls);
     } catch (err) {
+      console.log("err",err)
       setError(err instanceof Error ? err.message : "Unknown error");
     } finally {
       setLoading(false);
@@ -93,7 +94,7 @@ export default function BucketsPage() {
 
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || "Failed to update bucket ACL");
+        throw new Error(data.error || data.details || "Failed to update bucket ACL");
       }
 
       setBuckets((prev) =>

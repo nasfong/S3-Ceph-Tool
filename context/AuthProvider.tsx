@@ -10,15 +10,14 @@ import React, {
   useCallback,
 } from "react";
 import Keycloak from "keycloak-js";
+import { useRouter } from "next/navigation";
+import { initializeKeycloak, loginWithPopup, resetKeycloak } from "@/lib/keycloak";
 import {
-  forwardCallbackToOpener,
-  initializeKeycloak,
   isKeycloakCallback,
   isPopupCallback,
-  loginWithPopup,
-  PopupBlockedError,
-  PopupClosedError,
-} from "@/lib/keycloak";
+  sendCallbackToOpener,
+} from "@/lib/keycloak-callback";
+import { PopupBlockedError, PopupClosedError } from "@/lib/keycloak-popup";
 import { fetchS3UserDetail, S3UserDetail } from "@/lib/graphql-s3";
 import { AuthMode, S3Credentials } from "@/lib/types";
 import { ENV } from "@/lib/env";
@@ -29,6 +28,7 @@ import {
   saveAuthMode,
   saveCredentials,
 } from "@/lib/session";
+import { AuthError, FullScreenSpinner, NoS3Account } from "@/app/components/auth/AuthScreens";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -50,62 +50,6 @@ type InitState = "loading" | "no-s3-account" | "error" | "ready";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// ─── UI Components ────────────────────────────────────────────────────────────
-
-const FullScreenSpinner = () => (
-  <div className="flex items-center justify-center min-h-screen bg-[#0a0a0f]">
-    <div className="text-center">
-      <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500 mb-4" />
-      <p className="text-gray-400">Initializing, please wait...</p>
-    </div>
-  </div>
-);
-
-const LogoutButton = ({ onLogout }: { onLogout: () => void }) => (
-  <button
-    onClick={onLogout}
-    className="mt-4 px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors"
-  >
-    Logout
-  </button>
-);
-
-const NoS3Account = ({ onLogout }: { onLogout: () => void }) => (
-  <div className="flex items-center justify-center min-h-screen bg-[#0a0a0f]">
-    <div className="text-center space-y-3">
-      <div className="text-4xl">⚠️</div>
-      <p className="text-white text-lg font-semibold">No S3 account found</p>
-      <p className="text-gray-400 text-sm">
-        Your account does not have an S3 storage account associated with it.
-        <br />
-        Please subscribe to S3 on Cloud-Dash to gain access.
-      </p>
-      <LogoutButton onLogout={onLogout} />
-    </div>
-  </div>
-);
-
-const AuthError = ({ onLogout }: { onLogout: () => void }) => (
-  <div className="flex items-center justify-center min-h-screen bg-[#0a0a0f]">
-    <div className="text-center space-y-3">
-      <div className="text-4xl">❌</div>
-      <p className="text-white text-lg font-semibold">Authentication failed</p>
-      <p className="text-gray-400 text-sm">
-        Failed to initialize. Please refresh or try logging out.
-      </p>
-      <div className="flex gap-3 justify-center">
-        <button
-          onClick={() => window.location.reload()}
-          className="mt-4 px-4 py-2 text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 rounded-lg transition-colors"
-        >
-          Refresh
-        </button>
-        <LogoutButton onLogout={onLogout} />
-      </div>
-    </div>
-  </div>
-);
-
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 const credentialsFromUserDetail = (detail: S3UserDetail): S3Credentials => ({
@@ -118,6 +62,7 @@ const credentialsFromUserDetail = (detail: S3UserDetail): S3Credentials => ({
 // ─── Provider ─────────────────────────────────────────────────────────────────
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const router = useRouter();
   const [mode, setMode] = useState<AuthMode | null>(null);
   const [keycloak, setKeycloak] = useState<Keycloak | null>(null);
   const [token, setToken] = useState<string | undefined>(undefined);
@@ -127,8 +72,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   // ✅ Ref guard — survives StrictMode double-invoke and Keycloak redirect cycle
   const isInitializedRef = useRef(false);
 
-  // Starts (or resumes) a Keycloak session. On a fresh login this redirects away
-  // and never resolves; on the trip back it consumes the callback in the URL.
   // Shared tail of every Keycloak sign-in, popup or redirect alike.
   const completeKeycloakSession = useCallback(async (kc: Keycloak) => {
     // ✅ Only persist the mode once Keycloak has actually granted access, so an
@@ -152,6 +95,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setInitState("ready");
   }, []);
 
+  // Redirect sign-in — also how a callback is resumed on page load.
   const startKeycloakSession = useCallback(async () => {
     try {
       await completeKeycloakSession(await initializeKeycloak());
@@ -169,7 +113,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     // ✅ This window is the sign-in popup: hand the callback back to the opener,
     // which owns the session, and close. Never process the code here.
     if (isPopupCallback()) {
-      forwardCallbackToOpener();
+      sendCallbackToOpener();
       return;
     }
 
@@ -177,8 +121,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const storedMode = loadAuthMode();
 
       if (!storedMode) {
-        // Returning from Keycloak: the callback is in the URL, so resume the login
-        // even though nothing was stored before we redirected away.
+        // Back from a redirect sign-in: the callback is in the URL, so resume it
+        // even though nothing was stored before we left.
         if (isKeycloakCallback()) {
           await startKeycloakSession();
           return;
@@ -207,11 +151,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     init();
   }, [startKeycloakSession]);
 
-  // ✅ Signs in through a popup so this page never navigates away. Falls back to a
-  // full-page redirect when the browser blocks the popup. Nothing is persisted
-  // until Keycloak grants access.
+  // ✅ Signs in through a popup so this page never navigates away, falling back to
+  // a redirect when the browser blocks it.
   const loginWithKeycloak = useCallback(async () => {
     try {
+      // The chooser stays visible while the popup is open — no spinner until the
+      // user has actually signed in.
       const kc = await loginWithPopup();
       setInitState("loading");
       await completeKeycloakSession(kc);
@@ -244,17 +189,27 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const logout = useCallback(() => {
     const previousMode = mode;
     clearSession();
-    setCredentials(null);
-    setMode(null);
 
+    // Signing out of Keycloak has to leave the site: only Keycloak can end its own
+    // session, and that means a real navigation to its logout endpoint. It sends
+    // the browser back to the app afterwards.
     if (previousMode === "keycloak" && keycloak) {
       keycloak.logout({ redirectUri: window.location.origin });
       return;
     }
 
-    // Full reload also resets the module-level Keycloak singleton
-    window.location.href = "/";
-  }, [mode, keycloak]);
+    // Otherwise stay in the app and just navigate home. A reload used to clear
+    // these for us, so do it by hand: forget the Keycloak instance, drop the
+    // session, and leave the error screens (which is where logout may have been
+    // clicked from) so the login page can render.
+    resetKeycloak();
+    setCredentials(null);
+    setMode(null);
+    setToken(undefined);
+    setKeycloak(null);
+    setInitState("ready");
+    router.replace("/");
+  }, [mode, keycloak, router]);
 
   // ✅ Re-fetch S3 user detail (Keycloak mode only — key logins have no user detail)
   const refreshAuth = useCallback(async () => {

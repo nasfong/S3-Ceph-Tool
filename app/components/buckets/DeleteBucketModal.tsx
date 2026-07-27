@@ -24,6 +24,8 @@ export function DeleteBucketModal({
   const [stage, setStage] = useState<Stage>("confirm");
   const [confirmInput, setConfirmInput] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  // Permission failures can't be retried, so they read differently
+  const [denied, setDenied] = useState(false);
 
   if (!open) return null;
 
@@ -45,6 +47,7 @@ export function DeleteBucketModal({
           setStage("notEmpty");
         } else {
           setErrorMessage(data.error || "Unknown error");
+          setDenied(Boolean(data.denied));
           setStage("error");
         }
         return;
@@ -66,6 +69,7 @@ export function DeleteBucketModal({
     setStage("confirm");
     setConfirmInput("");
     setErrorMessage("");
+    setDenied(false);
   };
 
   const handleClose = () => {
@@ -192,9 +196,21 @@ export function DeleteBucketModal({
         {stage === "error" && (
           <>
             <div className="px-6 py-8 text-center">
-              <i className="ti ti-alert-triangle text-4xl text-red-500 mb-4 block" aria-hidden />
-              <h2 className="text-lg font-semibold text-white mb-2">Failed to delete bucket</h2>
-              <p className="text-sm text-gray-400 font-mono wrap-break-word">{errorMessage}</p>
+              <i
+                className={`ti ${denied ? "ti-lock" : "ti-alert-triangle"} text-4xl ${denied ? "text-amber-500" : "text-red-500"} mb-4 block`}
+                aria-hidden
+              />
+              <h2 className="text-lg font-semibold text-white mb-2">
+                {denied ? "Permission denied" : "Failed to delete bucket"}
+              </h2>
+              <p className={`text-sm text-gray-400 wrap-break-word ${denied ? "" : "font-mono"}`}>
+                {errorMessage}
+              </p>
+              {denied && (
+                <p className="mt-3 text-xs text-gray-500">
+                  Ask an administrator to grant delete access for this bucket.
+                </p>
+              )}
             </div>
 
             <div className="flex gap-3 border-t border-white/8 px-6 py-4">
@@ -204,12 +220,15 @@ export function DeleteBucketModal({
               >
                 Close
               </button>
-              <button
-                onClick={handleReset}
-                className="flex-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 px-4 py-2 text-sm font-medium text-white transition-colors"
-              >
-                Try again
-              </button>
+              {/* Retrying a permission failure would just fail again */}
+              {!denied && (
+                <button
+                  onClick={handleReset}
+                  className="flex-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 px-4 py-2 text-sm font-medium text-white transition-colors"
+                >
+                  Try again
+                </button>
+              )}
             </div>
           </>
         )}

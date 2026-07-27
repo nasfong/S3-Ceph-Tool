@@ -1,4 +1,4 @@
-import { S3Client, ListBucketsCommand, CreateBucketCommand } from "@aws-sdk/client-s3";
+import { S3Client, ListBucketsCommand, CreateBucketCommand, HeadBucketCommand, Bucket } from "@aws-sdk/client-s3";
 import { NextResponse, NextRequest } from "next/server";
 import https from "https";
 
@@ -37,7 +37,26 @@ export async function GET(request: NextRequest) {
 
     const client = getS3Client(request);
     const data = await client.send(new ListBucketsCommand({}));
-    return NextResponse.json({ buckets: data.Buckets ?? [] });
+
+    // ListBuckets reports every bucket the account owns, including ones this
+    // credential is denied. Probe each one and keep only what it can reach.
+    const probed = await Promise.all(
+      (data.Buckets ?? []).map(async (bucket): Promise<Bucket | null> => {
+        if (!bucket.Name) return null;
+        try {
+          await client.send(new HeadBucketCommand({ Bucket: bucket.Name }));
+          return bucket;
+        } catch (err) {
+          const status = (err as { $metadata?: { httpStatusCode?: number } }).$metadata
+            ?.httpStatusCode;
+          // Hide it only when genuinely denied — on a transient error keep it,
+          // so a hiccup never makes buckets silently disappear.
+          return status === 403 || status === 404 ? null : bucket;
+        }
+      })
+    );
+
+    return NextResponse.json({ buckets: probed.filter((b) => b !== null) });
   } catch (err) {
     console.error("S3 list buckets error:", err);
     

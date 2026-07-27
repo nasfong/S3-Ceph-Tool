@@ -6,6 +6,7 @@ type UploadItem = {
   file: File;
   status: keyof typeof STATUS_CONFIG;
   progress?: number;
+  error?: string;
 };
 
 type UploadQueueItemProps = {
@@ -44,6 +45,11 @@ export function UploadQueueItem({ item, onCancel, onRemove }: UploadQueueItemPro
           )}
           <span className={`text-[11px] font-mono shrink-0 ${cfg.color}`}>{statusLabel}</span>
         </div>
+
+        {/* why this file failed — e.g. no write permission on the bucket */}
+        {item.status === "error" && item.error && (
+          <p className="mt-1 text-[11px] leading-snug text-red-400/90">{item.error}</p>
+        )}
       </div>
 
       {/* status indicator / action */}
